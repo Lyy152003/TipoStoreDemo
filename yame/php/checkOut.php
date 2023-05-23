@@ -56,6 +56,11 @@
             $rs=DataProvider::executeQuery($sql);
             $row=mysqli_fetch_array($rs,MYSQLI_ASSOC);
             
+            // Giảm số lượng hàng hóa trong kho
+            $newQuantity = $row['Quantity'] - $SL;
+            $sql = "UPDATE Product SET Quantity=$newQuantity WHERE ProductID=$id";
+            DataProvider::executeQuery($sql);
+            
             $sql="INSERT INTO InvoiceDetails (InvoiceID, ProductID, Quantities, Price, SubTotal) VALUES ('$ai', '$id', '$SL', '".$row['UnitPrice']."', '".$row['UnitPrice']*$SL."')";
             DataProvider::executeQuery($sql);
 

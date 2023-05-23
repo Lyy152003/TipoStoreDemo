@@ -19,8 +19,8 @@ function PriceDot(text)
 // kiểm tra sl sản phẩm trong kho và số lượng người dùng nhập
 function checkQuant()
 {
-	var quant= document.productdetails.checkQuantity.value;
-	var inpquant= document.productdetails.txtQuantity.value;
+	var quant = parseInt(document.productdetails.checkQuantity.value);
+    var inpquant = parseInt(document.productdetails.txtQuantity.value);
 	if((quant==0))
 	{
 		alert("Đã hết hàng");
