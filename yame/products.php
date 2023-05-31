@@ -138,7 +138,7 @@
 								<span class="text-uppercase">Giới tính:</span>
 								<select class="input aside-sex-input" name="slcGender">
 									<?php
-										$gender = array("","Nam","Nữ","Unisex");
+										$gender = array("","Nam","Nữ");
 										$Gender="";
 										if(isset($_GET['slcGender']))
 											$Gender = $_GET['slcGender'];
