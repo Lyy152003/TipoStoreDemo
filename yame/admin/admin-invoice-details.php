@@ -35,6 +35,8 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
 	<script src='js/admin.js'></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,49 +59,24 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
-
 		<!-- header -->
 		<div id="header">
 			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-				</div>
+				
 				<div class="pull-right">
 					<ul class="header-btns">
 						<?php include('php/account.php'); ?>
 
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
+						<!-- <li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
+						</li> -->
 					</ul>
 				</div>
 			</div>
-			<!-- header -->
 		</div>
-		<!-- container -->
 	</header>
 	<!-- /HEADER -->
 
-	<?php include('php/navigationInvoice.php'); ?>
 
 	<!-- section -->
 	<?php
@@ -108,9 +85,11 @@
 	?>
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
+		<?php include('php/navigationInvoice.php'); ?>
+
 			<!-- row -->
-			<div class="row">
+			<div class="row row-admin">
 				<!-- MAIN -->
 				<div id="main" class="col-md-12">
 					<?php
@@ -125,7 +104,8 @@
 						echo "<p>Địa Chỉ Giao: ".$rowInvoice['Address']."</p>";
 						echo "<p>Tiền Hàng: ".$rowInvoice['SubTotal']."</p>";
 						echo "<p>Ship: ".$rowInvoice['Ship']."</p>";
-						echo "<p>Tổng Cộng: ".$rowInvoice['Total']."</p>";
+						echo "<p>Giảm giá: ".$rowInvoice['Discount']."</p>";
+						echo "<p>Giá trị đơn hàng: ".$rowInvoice['Total']."</p>";
 					?>
 					<table border=1>
 						<tr>
@@ -152,8 +132,8 @@
 							echo "<td></td>";
 							echo "<td></td>";
 							echo "<td></td>";
-							echo "<td>Tiền Hàng</td>";
-							echo "<td align='center'>".$rowInvoice['SubTotal']."</td>";
+							// echo "<td>Tiền Hàng</td>";
+							// echo "<td align='center'>".$rowInvoice['SubTotal']."</td>";
 						?>
 					</table>
 				</div>
@@ -165,28 +145,6 @@
 	</div>
 	<!-- /section -->
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>

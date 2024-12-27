@@ -32,6 +32,8 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
 	<script src="../js/extrafunction.js"></script>
 	<script src="js/admin.js"></script>
 
@@ -55,58 +57,39 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header">
 			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-				</div>
+				
 				<div class="pull-right">
 					<ul class="header-btns">
-					<?php include('php/account.php'); ?>
+						<?php include('php/account.php'); ?>
 
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
+						<!-- <li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
+						</li> -->
 					</ul>
 				</div>
 			</div>
-			<!-- header -->
 		</div>
-		<!-- container -->
+
 	</header>
 	<!-- /HEADER -->
 
-	<?php include('php/navigationProduct.php'); ?>
 
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
+		<?php include('php/navigationProduct.php'); ?>
+
 			<!-- row -->
-			<div class="row">
+			<div class="row row-admin">
 				<!-- MAIN -->
 				<div id="main" class="col-md-12">
+				<a href="adminproducts.php" class="btn btn-primary"> <i class="fa fa-home"></i></a> <!-- Change 'index.php' to your homepage URL -->
+
 					<?php
 						if(!isset($_POST['txtID']))
 							header("Location: adminproducts.php");
@@ -135,25 +118,36 @@
 							echo "<input name='qtxtProductName' id='qtxtProductName' type='text' value='".$row['ProductName']."'>";
 							echo "<br><br>";
 
-							echo "<span class='text-uppercase'>Loại: </span>";
+							// Loại sản phẩm với dấu *
+							echo "<span class='text-uppercase'>Loại <span style='color:red;'>*</span>: </span>";
 							echo "<select name='qslcProductType' id='qslcProductType'>";
-							while($row_type = mysqli_fetch_array($rs_Type,MYSQLI_BOTH))
-							{
-								if($row_type['ProductTypeID']==$row['ProductTypeID'])
-								echo "<option value='".$row_type['ProductTypeName']."' selected>".$row_type['ProductTypeName']."</option>";
-								else
-								echo "<option value='".$row_type['ProductTypeName']."'>".$row_type['ProductTypeName']."</option>";
-							}							
+
+							// Mảng để lưu các loại sản phẩm duy nhất
+							$productTypes = array();
+
+							// Lặp qua các loại sản phẩm
+							while($row_type = mysqli_fetch_array($rs_Type, MYSQLI_BOTH)) {
+								$productTypeName = $row_type['ProductTypeName'];
+								
+								// Kiểm tra nếu tên loại sản phẩm chưa tồn tại trong mảng
+								if (!in_array($productTypeName, $productTypes)) {
+									$productTypes[] = $productTypeName;  // Thêm vào mảng các loại sản phẩm duy nhất
+									
+									// Kiểm tra nếu loại sản phẩm này là loại của sản phẩm đang chỉnh sửa
+									$selected = ($row_type['ProductTypeID'] == $row['ProductTypeID']) ? "selected" : "";
+									echo "<option value='".$productTypeName."' $selected>".$productTypeName."</option>";
+								}
+							}
+
 							echo "</select>";
+
 							
 							echo "<span class='text-uppercase' style='padding-left:15px;'>Giới tính: </span>";
 							echo "<select name='qslcGender' id='qslcGender'>"; 
-							foreach($gender as $Gender)
-								if($Gender==$row['Gender'])
-									echo "<option value='".$row['Gender']."' selected>".$Gender."</option>";
-								else
-									echo "<option value='".$Gender."'>".$Gender."</option>";
+							// Ban đầu hiển thị giá trị mặc định
+							echo "<option value='".$row['Gender']."' selected>".$row['Gender']."</option>";
 							echo "</select>";
+
 							echo "<br><br>";
 
 							echo "<span class='text-uppercase'>Giá: </span>";
@@ -163,6 +157,10 @@
 
 							echo "<span class='text-uppercase'>Số Lượng: </span>";
 							echo "<input name='qtxtQuantity' id='qtxtQuantity' type='number' min=0 value='".$row['Quantity']."'>";
+							echo "<br><br>";
+
+							echo "<span class='text-uppercase'>Mô tả: </span>";
+							echo "<input name='qtxtDescription' id='qtxtDescription' type='text' value='".$row['Description']."'>";
 							echo "<br><br>";
 
 							echo "<span class='text-uppercase'>Ngày thêm hàng: </span>";
@@ -185,28 +183,7 @@
 	</div>
 	<!-- /section -->
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
+	
 
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>
@@ -215,7 +192,27 @@
 	<script src="../js/nouislider.min.js"></script>
 	<script src="../js/jquery.zoom.min.js"></script>
 	<script src="../js/main.js"></script>
+<script>
+	$(document).ready(function () {
+    $('#qslcProductType').on('change', function () {
+        var selectedType = $(this).val(); // Lấy loại sản phẩm được chọn
 
+        // Gửi AJAX tới server
+        $.ajax({
+            url: 'getGendersByProductType.php',
+            type: 'POST',
+            data: { productTypeName: selectedType },
+            success: function (response) {
+                $('#qslcGender').html(response); // Cập nhật danh sách giới tính
+            },
+            error: function () {
+                alert("Có lỗi xảy ra khi lấy danh sách giới tính.");
+            }
+        });
+    });
+});
+
+</script>
 </body>
 
 </html>

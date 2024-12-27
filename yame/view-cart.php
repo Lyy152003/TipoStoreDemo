@@ -44,82 +44,18 @@
 </head>
 
 <body>
-	<!-- HEADER -->
-	<header>
-		<?php
-			include('php/checkLogin.php');
-		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('php/helloUsr.php');
-					?>
-				</div>
-				
-			</div>
-		</div>
-		<!-- /top Header -->
-
-		<!-- header -->
-		<div id="header">
-			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="./images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-
-					<!-- Search -->
-					<div class="header-search">
-						<form action="products.php" method="GET" onsubmit="return true" name="Search">
-							<input class="input search-input" type="text" placeholder="Search" name="txtSearch"
-								<?php
-									if (isset($_GET['txtSearch']))
-										echo "value=\"".$_GET['txtSearch']."\"";
-								?>
-							>
-							<button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
-						</form>
-					</div>
-					<!-- /Search -->
-				</div>
-				<div class="pull-right">
-					<ul class="header-btns">
-						<!-- Account -->
-						<?php
-							include('php/account.php');
-						?>
-						<!-- /Account -->
-
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
-							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
-					</ul>
-				</div>
-			</div>
-			<!-- header -->
-		</div>
-		<!-- container -->
-	</header>
-	<!-- /HEADER -->
-
+	<!-- hello, logo, search, signin/up, basket -->
+	<?php include('php/header.php'); ?>
 	<!-- NAVIGATION -->
 	<div id="navigation">
 		<!-- container -->
 		<div class="container">
 			<div id="responsive-nav">
-			<!-- category nav -->
-			<div class="category-nav show-on-click">
-				<?php include('php/category-nav.php'); ?>
-			</div>
-			<!-- /category nav -->
+				<!-- category nav -->
+				<div class="category-nav">
+					<?php include('php/category-nav.php'); ?>
+				</div>
+				<!-- /category nav -->
 
 				<?php include('php/menu-nav.php'); ?>
 			</div>
@@ -148,7 +84,7 @@
 	?>
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-cart">
 			<!-- row -->
 			<div class="row">
 				<?php
@@ -170,11 +106,9 @@
 								<tr>
 									<th>Hàng Hóa</th>
 									<th></th>
-									<th class="text-center">Giá</th>
 									<th class="text-center">Số Lượng</th>
 									<th class="text-center">Thành tiền</th>
-									<th class="text-center">Cập Nhật</th>
-									<th class="text-center">Bỏ</th>
+									<th class="text-center">...</th>
 								</tr>
 							</thead>
 							<?php
@@ -196,12 +130,11 @@
 											echo "			<a href='#'>".$row['ProductName']."</a>";
 											echo "			<ul>";
 											echo "			</ul>";
+											echo "		<div class='price text-center'><strong><script>document.write(PriceDot(".$row["UnitPrice"]."))</script></strong></div>";
 											echo "		</td>";
-											echo "		<td class='price text-center'><strong><script>document.write(PriceDot(".$row["UnitPrice"]."))</script></strong></td>";
 											echo "		<td class='qty text-center'><input name='txtQuantity' class='input' type='number' min=1 value=$SL></td>";
 											echo "		<td class='total text-center'><strong class='primary-color'><script>document.write(PriceDot(".$row['UnitPrice']*$SL."))</script></strong></td>";
-											echo "		<td class='text-center'><button type='submit' name='btnUpdate' class='main-btn icon-btn'><i class='fa fa-refresh'></i></button></td>";
-											echo "		<td class='text-center'><button type='submit' name='btnDel' class='main-btn icon-btn'><i class='fa fa-close'></i></button></td>";
+											echo "		<td class='text-center'><button type='submit' name='btnUpdate' class='main-btn icon-btn'><i class='fa fa-refresh'></i></button><button type='submit' name='btnDel' class='main-btn icon-btn'><i class='fa fa-close'></i></button></td>";
 											echo "	</tr>";
 											echo "</tbody>";
 											echo "<input name='txtProductID' type='hidden' value='".$row['ProductID']."' >";
@@ -211,7 +144,7 @@
 										}
 									}
 							?>
-							<tfoot>
+							<tfoot style='display:none;'>
 								<tr>
 									<th class="empty" colspan="3"></th>
 									<th>Tổng</th>
@@ -219,7 +152,7 @@
 								</tr>
 							</tfoot>
 						</table>
-						<div class="pull-right">
+						<div class="pull-right" style='display:none;'>
 							<a href='checkout.php'><button type='button' class="primary-btn">Thanh Toán</button></a>
 						</div>
 						<?php
@@ -262,6 +195,125 @@
 				?>
 			</div>
 			<!-- /row -->
+			 <!-- Đơn hàng tạm tính -->
+		<div class="col-md-4">
+			<div class="order-summary clearfix " >
+				<div class="section-title" >
+					<h3 class="title">Đơn hàng</h3>
+				</div>
+				
+				<form method="GET">
+					<?php
+						require_once('DataProvider.php');
+						$Price = 0;
+						$discount_percentage = 0; // Mặc định giảm giá là 0
+						$error_message = ""; // Biến để chứa thông báo lỗi
+						// Tính tổng giá trị giỏ hàng
+						if (isset($_SESSION['Cart'])) {
+							foreach ($_SESSION['Cart'] as $id => $quantity) {
+								$sql = "SELECT * FROM Product WHERE ProductID = $id";
+								$rs = DataProvider::executeQuery($sql);
+								$row = mysqli_fetch_array($rs, MYSQLI_ASSOC);
+								$Price += $row['UnitPrice'] * $quantity;
+							}
+						}
+						// Kiểm tra xem người dùng có nhập mã khuyến mãi không qua GET
+						if (isset($_GET['apply_promo']) && isset($_GET['promo_code'])) {
+							if ($Price == 0) {
+								// Nếu giá trị Price là 0, hiển thị lỗi yêu cầu người dùng thêm sản phẩm vào giỏ hàng
+								$error_message = "Vui lòng chọn sản phẩm trước khi áp dụng mã giảm giá.";
+								
+							} else {
+								$promo_code = $_GET['promo_code']; // Lấy mã giảm giá từ URL
+								$sql = "SELECT * FROM voucher WHERE VoucherID = '$promo_code'";
+								$rs = DataProvider::executeQuery($sql);
+
+								if (mysqli_num_rows($rs) > 0) {
+									$row = mysqli_fetch_array($rs, MYSQLI_ASSOC);
+									$start_date = $row['StartDate'];
+									$end_date = $row['EndDate'];
+									$current_date = date('Y-m-d'); // Lấy ngày hiện tại theo định dạng 'YYYY-MM-DD'
+
+									// Kiểm tra xem mã giảm giá có hợp lệ không (trong khoảng thời gian sử dụng)
+									if ($start_date <= $current_date && $end_date >= $current_date) {
+										// Mã giảm giá hợp lệ
+										$discount_percentage = $row['DiscountPercent']; // Lấy phần trăm giảm giá từ cơ sở dữ liệu
+									} else {
+										// Nếu mã giảm giá đã hết hạn
+										$discount_percentage = 0;
+										$error_message = "Mã giảm giá đã hết giá trị sử dụng.";
+									}
+								} else {
+									// Nếu không có mã giảm giá hợp lệ
+									$discount_percentage = 0;
+									$error_message = "Mã giảm giá không hợp lệ.";
+								}
+
+							}
+						}
+
+						// Lưu giá trị giảm giá vào session
+						$_SESSION['discount_percentage'] = $discount_percentage;
+					?>
+					<table class="table">
+						<tr>
+							<td><strong>Nhập mã khuyến mãi</strong></td>
+							<td class="text-right">
+								<div class="promo-code-container">
+									<input type="text" name="promo_code" class="form-control" placeholder="Nhập mã khuyến mãi">
+									<button type="submit" name="apply_promo" class="btn btn-primary">Áp dụng</button>
+								</div>
+							</td>
+						</tr>
+						<?php if ($error_message): ?>
+							<!-- Hiển thị thông báo lỗi nếu có -->
+							<tr>
+								<td colspan="2" class="text-center" style="color: red;">
+									<small><?php echo $error_message; ?></small>
+								</td>
+							</tr>
+						<?php endif; ?>
+						<tr>
+							<td><strong>Đơn hàng</strong></td>
+							<td class="text-right">
+								<strong><script>document.write(PriceDot(<?php echo $Price; ?>))</script></strong>
+							</td>
+						</tr>
+							
+						<tr>
+							<td ><strong>Giảm giá</strong></td>
+							<td class="text-right">
+								<strong><?php 
+									if ($Price == 0) {
+										echo "0%";
+									} else {
+										echo $discount_percentage . "%"; 
+									}
+								?></strong>
+							</td>
+							</tr>
+						<tr>
+							<td><strong>Tổng tiền</strong></td>
+							<td class="text-right">
+							<strong id="totalAfterDiscount">
+								<?php 
+									if ($Price == 0) {
+										echo "0 đ";
+									} else {
+										echo number_format($Price - ($Price * $discount_percentage / 100), 0, ',', '.') . " đ"; 
+									}
+								?>
+							</strong>
+							</td>
+						</tr>
+					</table>
+					<div class="pull-right">
+						<a href="checkout.php"><button type="button" class="primary-btn">Tiếp tục Thanh Toán</button></a>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- /Đơn hàng tạm tính -->
 		</div>
 		<!-- /container -->
 	</div>
@@ -355,7 +407,27 @@
 	<script src="js/nouislider.min.js"></script>
 	<script src="js/jquery.zoom.min.js"></script>
 	<script src="js/main.js"></script>
+<!-- JavaScript để xử lý gửi form và chuyển hướng lại -->
+<script>
+document.getElementById("apply_promo").addEventListener("click", function() {
+    // Lấy giá trị mã giảm giá từ ô input
+    var promo_code = document.getElementById("promo_code").value;
 
+    // Kiểm tra nếu mã giảm giá không trống
+    if (promo_code.trim() !== "") {
+        // Tạo form động
+        var form = document.getElementById("promo-form");
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "promo_code";
+        input.value = promo_code;
+        form.appendChild(input);
+
+        // Gửi form qua POST mà không giữ lại tham số trong URL
+        form.submit();
+    }
+});
+</script>
 </body>
 
 </html>

@@ -4,21 +4,9 @@
     <?php
         include('checkLogin.php');
     ?>
-    <!-- top Header -->
-    <div id="top-header">
-        <div class="container">
-            <div class="pull-left">
-                <?php
-                    include('helloUsr.php');
-                ?>
-            </div>
-        </div>
-    </div>
-    <!-- /top Header -->
-
     <!-- header -->
     <div id="header">
-        <div class="container">
+        <div class="container-menu">
             <div class="pull-left">
                 <!-- Logo -->
                 <div class="header-logo">
@@ -31,7 +19,7 @@
                 <!-- Search -->
                 <div class="header-search">
                     <form action="products.php" method="GET" onsubmit="return true" name="Search">
-                        <input class="input search-input" type="text" placeholder="Search " name="txtSearch"
+                        <input class="input search-input" type="text" placeholder="12.12 Tipo Store Day - Siêu sale Đa Kênh ..." name="txtSearch"
                             <?php
                                 if (isset($_GET['txtSearch']))
                                     echo "value=\"".$_GET['txtSearch']."\"";
@@ -41,15 +29,26 @@
                     </form>
                 </div>
                 <!-- /Search -->
+
+                <!-- Dòng chữ chạy tự động dưới thanh tìm kiếm -->
+                <div class="marquee-container">
+                    <!-- <p class="marquee-text">📢📢📢 ĐĂNG NHẬP NGAY ĐỂ NHẬN NHIỀU ƯU ĐÃI ĐẶC BIỆT ! <a href='signin.php'>👉👉ĐĂNG NHẬP NGAY👈👈</a></p> -->
+                    <?php
+                    // hiển thị thông điệp lời chào đầu trang
+                        if($_SESSION['isLogin']==1)
+                            echo "<p class='marquee-text'>KÍNH CHÀO QUÝ KHÁCH ".$rowUsr['UsrName']." 👫🌸 TỤI MÌNH THẤY BẠN Ở ĐÂY RỒI ĐẤY! VÀO MUA SẮM NGAY ĐỂ SĂN ƯU ĐÃI SIÊU HOT ĐANG CHỜ BẠN NÀO! 🚀✨</p>";
+                        else
+                            echo "<p class='marquee-text'>📢📢📢 ĐĂNG NHẬP NGAY ĐỂ NHẬN NHIỀU ƯU ĐÃI ĐẶC BIỆT ! <a href='signin.php'><b>👉👉ĐĂNG NHẬP NGAY👈👈</b></a> </p>";
+                    ?>
+                </div>
+                
             </div>
             <div class="pull-right">
                 <ul class="header-btns">
-                    <!-- Account -->
-                    <?php
-                        include('account.php');
-                    ?>
-                    <!-- /Account -->
-
+                    
+                    
+                     
+                    
                     <!-- Cart -->
                     <?php
                         $Count=0;
@@ -63,9 +62,9 @@
                                 <i class="fa fa-shopping-cart"></i>
                                 <?php echo "<span class='qty'>$Count</span>"; ?>
                             </div>
-                            <strong class="text-uppercase">My basket :</strong>
+                            <strong class="text-uppercase"></strong>
                             <br>
-                            <span>View detail</span>
+                            <span></span>
                         </a>
                         <div class='custom-menu'>
                             <div id='shopping-cart'>
@@ -115,7 +114,18 @@
                         </div>
                     </li>
                     <!-- /Cart -->
-
+                     <!-- Account -->
+                    <?php
+                        include('account.php');
+                    ?>
+                    <!-- /Account -->
+                    <!-- Location Store -->
+                    <li class="header-location">
+                        <a href="#" class="header-btns-icon">
+                            <i class="fa fa-map-marker"></i> <!-- Thêm biểu tượng location ở đây -->
+                        </a>
+                    </li>
+                    <!-- /Location Store -->
                     <!-- Mobile nav toggle-->
                     <li class="nav-toggle">
                         <button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>

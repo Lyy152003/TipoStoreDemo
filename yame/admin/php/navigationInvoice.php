@@ -9,6 +9,7 @@
                 <ul class="menu-list">
                     <li><a href="index.php">Trang chủ</a></li>
                     <li><a href="admin-invoice.php">Hóa Đơn</a></li>
+                    <li><a href="admin-statistics.php">Thống Kê</a></li>
                 </ul>
             </div>
             <!-- menu nav -->

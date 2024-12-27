@@ -2,6 +2,7 @@ function checkAddProductNULL()
 {
     var flag=true;
     var txtProductName = document.addProduct.atxtProductName.value;
+    var txtBrandName = document.addProduct.atxtBrandName.value;
     var slcType = document.addProduct.aslcType.value;
     var slcGender = document.addProduct.aslcGender.value;
     var slcSize = document.addProduct.aslcSize.value;
@@ -9,6 +10,7 @@ function checkAddProductNULL()
     var txtQuantity = document.addProduct.atxtQuantity.value;
 
     document.getElementById('lblProductNameNULL').style.display='none';
+    document.getElementById('lblBrandNameNULL').style.display='none';
     document.getElementById('lblTypeNULL').style.display='none';
     document.getElementById('lblGenderNULL').style.display='none';
     document.getElementById('lblSizeNULL').style.display='none';
@@ -18,6 +20,8 @@ function checkAddProductNULL()
 
     if(txtProductName.length==0)
         {document.getElementById('lblProductNameNULL').style.display='inline-block'; flag=false;}
+    if(txtBrandName.length==0)
+        {document.getElementById('lblBrandNameNULL').style.display='inline-block'; flag=false;}
     if(slcType.length==0)
         {document.getElementById('lblTypeNULL').style.display='inline-block'; flag=false;}
     if(slcGender.length==0)
@@ -69,10 +73,13 @@ function checkAddProductTypeNULL()
 {
     var flag=true;
     var txtProductName = document.addProductType.ttxtProductName.value;
+    var txtCategory = document.addProductType.ttxtCategory.value;
     var slcGender = document.addProductType.tslcGender.value;
 
     if(txtProductName.length==0)
         {document.getElementById('lblProductNameTypeNULL').style.display='inline-block'; flag=false;}
+    if(txtCategory.length==0)
+        {document.getElementById('lblCategoryNULL').style.display='inline-block'; flag=false;}
     if(slcGender.length==0)
         {document.getElementById('lblGenderNULL').style.display='inline-block'; flag=false;}
     if(!flag)
@@ -84,21 +91,29 @@ function checkAddProductTypeCHAR()
 {
 	var flag=true;
 	var txtProductName = document.addProductType.ttxtProductName.value;
+    var txtCategory = document.addProductType.ttxtCategory.value;
+
 	var strangename =/["'?<>,.!@#$%^&*();\\]/g ;
 	
 	if(strangename.test(txtProductName))
         {document.getElementById('lblProductNameTypeCHAR').style.display='inline-block'; flag=false;}
 	
+    if(strangename.test(txtCategory))
+        {document.getElementById('lblCategoryCHAR').style.display='inline-block'; flag=false;}
+
 	return flag;
 		
 }
+
+
 function checkAddProductType()
 {
     var flag=true;
 
     document.getElementById('lblProductNameTypeNULL').style.display='none';
     document.getElementById('lblGenderNULL').style.display='none';
-    
+    document.getElementById('lblCategoryNULL').style.display='none';
+
     flag=checkAddProductTypeNULL()
     if(!checkAddProductTypeCHAR())
         flag=checkAddProductTypeCHAR();
@@ -109,6 +124,8 @@ function Reset()
 {
     document.addProductType.ttxtProductName.value="";
     document.addProductType.tslcGender.value="";
+    document.addProductType.ttxtCategory.value="";
+
 }
 
 function checkEditProductTypeNULL()
@@ -148,6 +165,8 @@ function checkEditProductType()
     flag=true;
     flag=checkEditProductTypeNULL();
 	flag=checkEditProductTypeCHAR();
+    flag=checkEditProductTypeNULL();
+	flag=checkEditProductTypeCHAR();
 	return flag;
 }
 
@@ -160,10 +179,12 @@ function check_SigninAdmin()
 	var txtPhonenumber = signinform.phone.value;
 	var txtAddress= signinform.address.value;
 	var strangeemail =/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm ;
-	var strangename =/[~`\+\-\_\[\]<>:\;!@#$%^&*()\\]/g ;
+	var strangename =/[~\+\-\_\[\]<>:\;!@#$%^&*()\\]/g ;
 	var numname =/[0-9]/g;
 	var phonecheck =/^0+[0-9]{8,11}$/;
 	var addresscheck =/[\\!#$%^&*()-_=+{}[]|\.?]/g;
+    var slcAuth = signinform.slcAuth.value; // Lấy giá trị của quyền được chọn
+
     document.getElementById('nullEmail').style.display='none';
     document.getElementById('wrongEmail').style.display='none';
     document.getElementById('wrongPassword').style.display='none';
@@ -176,7 +197,8 @@ function check_SigninAdmin()
 	document.getElementById('nullAddress').style.display='none';
 	document.getElementById('wrongAddress').style.display='none';
     document.getElementById('numIDAdmin').style.display='none';
-    
+    document.getElementById('nullAuth').style.display = 'none'; // Reset thông báo chọn quyền
+
 	flag=true;
 	var phoneflag = true;
 	var emailflag = true;
@@ -189,6 +211,7 @@ function check_SigninAdmin()
         flag=false;
 		emailflag = false;
     }
+
     if(txtPassword.length==0)
     {
         document.getElementById('nullPassword').style.display='block';
@@ -220,6 +243,11 @@ function check_SigninAdmin()
         flag=false;
     }
 	
+    /* Check NULL for Auth */
+    if (slcAuth == '') {
+        document.getElementById('nullAuth').style.display = 'block';
+        flag = false;
+    }
     /*Check strange character*/
 	if(txtEmail.match(strangeemail)==null && emailflag==true)
 	{

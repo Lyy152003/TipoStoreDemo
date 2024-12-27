@@ -3,5 +3,5 @@
     if($_SESSION['isLogin']==1)
         echo "<span>Welcome ".$rowUsr['UsrName']." 👫🌸</span>";
     else
-        echo "<span>📢📢📢 Are you ready to experience the amazing features of our website? <a href='signin.php'><b>Log in</b></a> to explore today 🐰</span>";
+        echo "<span>📢📢📢 Are you ready to experience the amazing features of our web? <a href='signin.php'><b>Log in</b></a> to explore today 🐰</span>";
 ?>

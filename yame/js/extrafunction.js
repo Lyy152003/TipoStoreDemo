@@ -254,16 +254,18 @@ function checkAdvancedSearch()
 function switchShipping()
 {
     radioShipping = document.getElementsByName('shipping');
+    var discountPercentage = parseInt(document.getElementById('discountAmount').innerHTML); // Giảm giá (phần trăm)
+
     for(i=0;i<radioShipping.length;i++)
     if(radioShipping[i].checked==true)
         if(radioShipping[i].value==0)
         {
             document.getElementById('lblShip').innerHTML=PriceDot(50000);
-            document.getElementById('lblTotal').innerHTML=PriceDot(50000+parseInt(document.getElementById('subTotal').value));
+            document.getElementById('lblTotal').innerHTML=PriceDot(50000+((parseInt(document.getElementById('subTotal').value))-(parseInt(document.getElementById('subTotal').value)*discountPercentage/100)));
         }
         else
         {
-            document.getElementById('lblTotal').innerHTML=PriceDot(parseInt(document.getElementById('subTotal').value));
+            document.getElementById('lblTotal').innerHTML=PriceDot((parseInt(document.getElementById('subTotal').value))-(parseInt(document.getElementById('subTotal').value)*discountPercentage/100));
             document.getElementById('lblShip').innerHTML='0';
         }
 }

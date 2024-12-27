@@ -34,7 +34,6 @@
       }
     }
   });
-
   // HOME SLICK
   $('#home-slick').slick({
     autoplay: true,

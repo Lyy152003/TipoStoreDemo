@@ -17,7 +17,9 @@
     $address="";
     $phoneNo="";
     $email=$_SESSION['username'];
-    
+    // Lấy giá trị giảm giá từ session hoặc gán giá trị mặc định
+    $discount_percentage = isset($_SESSION['discount_percentage']) ? $_SESSION['discount_percentage'] : 0;
+
     if(isset($_POST['btnCheckOut']))
     {
         if($_POST['txtUsrName']=='')
@@ -45,7 +47,7 @@
         else
             $ship=0;
 
-        $sql="INSERT INTO Invoice (Email, UsrName, PhoneNo, Address, SubTotal, Ship, Total, DateInvoice) VALUES ('$email', '$usrName', '$phoneNo', '$address', '0', '$ship', '0', NOW())";
+        $sql="INSERT INTO Invoice (Email, UsrName, PhoneNo, Address, SubTotal, Ship, Total,Discount, DateInvoice, Status) VALUES ('$email', '$usrName', '$phoneNo', '$address', '0', '$ship', '0','0', NOW(), 'Chờ xác nhận')";
         DataProvider::executeQuery($sql);
 
         $Price=0;
@@ -66,8 +68,11 @@
 
             $Price+=$row['UnitPrice']*$SL;
         }
+        // Tính giá trị giảm giá
+        $discount_amount = ($Price * $discount_percentage) / 100;
+        $total_after_discount = $Price - $discount_amount;
 
-        $sql="UPDATE Invoice SET SubTotal=".$Price.", Total=".($Price+$ship)." WHERE InvoiceID=$ai";
+        $sql="UPDATE Invoice SET SubTotal=".$Price.",Discount=$discount_amount, Total=".($total_after_discount + $ship)." WHERE InvoiceID=$ai";
         DataProvider::executeQuery($sql);
 
         unset($_SESSION['Cart']);

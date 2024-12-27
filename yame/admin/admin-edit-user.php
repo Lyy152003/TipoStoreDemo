@@ -35,6 +35,8 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
 	<script src='js/admin.js'></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -46,67 +48,45 @@
 </head>
 
 <body>
-	<!-- HEADER -->
 	<header>
-		<?php
-			if($_SESSION['isLogin']==1)
-			{
-				require_once('../DataProvider.php');
-				$sql="SELECT * FROM Usr WHERE Email='".$_SESSION['username']."'";
-				$Usr=DataProvider::executeQuery($sql);
-				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
-			}
-		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
+			<?php
+				if($_SESSION['isLogin']==1)
+				{
+					require_once('../DataProvider.php');
+					$sql="SELECT * FROM Usr WHERE Email='".$_SESSION['username']."'";
+					$Usr=DataProvider::executeQuery($sql);
+					$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
+				}
+			?>
 
-		<!-- header -->
-		<div id="header">
-			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-				</div>
-				<div class="pull-right">
-					<ul class="header-btns">
-						<?php include('php/account.php'); ?>
-
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
-							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
-					</ul>
-				</div>
-			</div>
 			<!-- header -->
-		</div>
-		<!-- container -->
-	</header>
-	<!-- /HEADER -->
+			<div id="header">
+				<div class="container">
+					
+					<div class="pull-right">
+						<ul class="header-btns">
+							<?php include('php/account.php'); ?>
 
-	<?php include('php/navigationUsr.php') ?>
+							<!-- <li class="nav-toggle">
+								<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
+							</li> -->
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- container -->
+		</header>
+		<!-- /HEADER -->
+
 
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
 			<!-- row -->
-			<div class="row">
+			<?php include('php/navigationUsr.php') ?>
+
+			<div class="row row-admin">
 				<!-- MAIN -->
 				<?php
 					require_once('../DataProvider.php');
@@ -117,8 +97,10 @@
 						$row = mysqli_fetch_array($rs,MYSQLI_BOTH);
 					}
 				?>
+				
 				<div id="main" class="col-md-12">
-					<form id='editUser' name='editUser' action='adminUser.php' method='POST' onsubmit='return true'>
+				<a href="admin-add-usr.php" class="btn btn-primary"> <i class="fa fa-home"></i></a> <!-- Change 'index.php' to your homepage URL -->
+					<form id='editUser' name='editUser' action='admin-add-usr.php' method='POST' onsubmit='return true'>
 						<span id='lblNULL' style='color:red; display:none;'>*: Chưa nhập/Chưa chọn</span>
 						<span class='text-uppercase'>Email: </span>
 						<?php
@@ -127,7 +109,7 @@
 						?>
 						<br><br>
 
-						<span class='text-uppercase'>Tên người dùng: </span>
+						<span class='text-uppercase'>Họ tên: </span>
 						<?php
 							echo "<input type='text' name='txtUsrName' id='txtUsrName' value='".$row['UsrName']."'>";
 						?>
@@ -194,28 +176,7 @@
 	</div>
 	<!-- /section -->
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
+	
 
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>

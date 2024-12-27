@@ -35,6 +35,8 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
 	<script src='js/admin.js'></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,57 +59,35 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header">
 			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-				</div>
+				
 				<div class="pull-right">
 					<ul class="header-btns">
 						<?php include('php/account.php'); ?>
-						<!-- /Account -->
 
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
+						<!-- <li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
+						</li> -->
 					</ul>
 				</div>
 			</div>
-			<!-- header -->
 		</div>
-		<!-- container -->
+
 	</header>
 	<!-- /HEADER -->
 
-	<?php include('php/navigationProduct.php'); ?>
 
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
+		<?php include('php/navigationProduct.php'); ?>
+
 			<!-- row -->
-			<div class="row">
+			<div class="row row-admin">
 				<!-- MAIN -->
 				<?php
 					require_once('../DataProvider.php');
@@ -118,8 +98,11 @@
 						$row = mysqli_fetch_array($rs,MYSQLI_BOTH);
 					}
 				?>
+				
 				<div id="main" class="col-md-12">
-					<form id='editProductType' name='editProductType' action='admin-edit-product-type.php' method='POST' onsubmit='return checkEditProductType();'>
+				<a href="admin-add-product-type.php" class="btn btn-primary"> <i class="fa fa-home"></i></a> <!-- Change 'index.php' to your homepage URL -->
+
+					<form id='editProductType' name='editProductType' action='admin-add-product-type.php' method='POST' onsubmit='return checkEditProductType();'>
 						<span id='lblNULL' style='color:red; display:none;'>*: Chưa nhập/Chưa chọn</span>
 						<span id='lblECHAR' style='color:red; display:none;'>*: Không được có ký tự lạ</span>
 						<span class='text-uppercase'>Tên loại sản phẩm: </span>
@@ -142,8 +125,20 @@
 									echo "<option value='".$Gender."'>".$Gender."</option>";
 							?>
 						</select>
+						<!-- Danh mục -->
+						<span class="text-uppercase">Danh mục: </span>
+						<select name="eslcCategory" id="eslcCategory">
+							<?php
+								// Duyệt qua tất cả các danh mục và hiển thị trong dropdown
+								$sqlCategories = "SELECT DISTINCT Category FROM producttype";
+								$rsCategories = DataProvider::executeQuery($sqlCategories);
+								while ($categoryRow = mysqli_fetch_array($rsCategories, MYSQLI_ASSOC)) {
+									$selectedCategory = ($categoryRow['Category'] == $row['Category']) ? "selected" : "";
+									echo "<option value='".$categoryRow['Category']."' $selectedCategory>".$categoryRow['Category']."</option>";
+								}
+							?>
+						</select>
 						<br><br>
-
 						<input name='btnEditProductType' type='submit' value='Sửa Loại Hàng'>
 						<input type='reset' value='Làm lại'>
 					</form>
@@ -156,29 +151,7 @@
 	</div>
 	<!-- /section -->
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
-
+	
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>

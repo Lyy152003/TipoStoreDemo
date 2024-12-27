@@ -56,17 +56,6 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header">

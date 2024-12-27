@@ -97,7 +97,7 @@
 						<div id="product-main-view">
 							<div class="product-view">
 							<?php
-								echo "<img src= './img/".$rowProduct['imgsrc']."' alt=''>"; 
+								echo "<img  src= './img/".$rowProduct['imgsrc']."' alt=''  style='height:auto;'>";
 							?>
 								
 							</div>
@@ -109,14 +109,14 @@
 							<?php
 								echo "<h2 class='product-name'>".$rowProduct['ProductName']."</h2>";
 								echo "<h3 class='product-price'><script>document.write(PriceDot(".$rowProduct['UnitPrice']."))</script></h3>";
+								echo "<p class='product-description'> ".$rowProduct['Description']."</p>";
 								if($rowProduct['Quantity']>0)
 									{ echo "<p><strong>Tình trạng:</strong> Còn hàng</p>";} 
 								else{ echo "<p><strong>Tình trạng:</strong><strong style='color:red;'> Hết hàng </strong></p>";}
 								echo "<input type='hidden' name='checkQuantity' value='".$rowProduct['Quantity']."'>";
-								echo "<p><strong>Nhà cung cấp:</strong> Tipo</p>";
+								echo "<p><strong>Thương hiệu:</strong> ".$rowProduct['Brand']."</p>";
 								echo "<p><strong>Giới tính:</strong> ".$rowProduct['Gender']."</p>";
 								echo "<p><strong>Loại sản phẩm:</strong> ".$rowProduct['ProductTypeName']."</p>";
-								echo "<p> ".$rowProduct['Description']."</p>";
 							?>
 								<div class="product-btns">
 									<div class="qty-input">
@@ -129,18 +129,36 @@
 										
 									?>
 									<input name='btnAddToCart' type="submit" style="margin-top:50px;" class="primary-btn add-to-cart" value="Thêm vào giỏ hàng">
+									
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
 				<!-- /Product Details -->
+
+				<?php
+				echo "<p style='margin-top: 30px; margin-bottom: 15px; border-top: 1px dashed grey;'>".$rowProduct['Note']."</p>";
+				?>
 			</div>
 			<!-- /row -->
 		</div>
 		<!-- /container -->
 	</div>
 	<!-- /section -->
+
+	<!-- <div class="row product-introduction">
+			<div class="col-md-12">
+				<h2 class="intro-title">Giới thiệu về sản phẩm</h2>
+				<p class="intro-description">
+					Sản phẩm ESTÉE LAUDER Perfectionist Pro Rapid Brightening Treatment with Ferment3 + Vitamin C mang đến một giải pháp sáng da nhanh chóng và hiệu quả. Với công nghệ Ferment3 và Vitamin C, sản phẩm giúp làm sáng da, giảm đốm nâu và mang lại làn da rạng rỡ, đều màu. Sự kết hợp này không chỉ mang lại hiệu quả làm sáng da mà còn giúp cải thiện độ đàn hồi và dưỡng ẩm, mang lại vẻ ngoài tươi mới, khỏe mạnh cho làn da của bạn.
+				</p>
+				<p class="intro-description">
+					Chỉ cần sử dụng một lượng nhỏ mỗi ngày, bạn sẽ cảm nhận được sự khác biệt rõ rệt, làn da trở nên sáng bóng, mịn màng hơn. Sản phẩm phù hợp với mọi loại da và là lựa chọn lý tưởng cho những ai muốn làm sáng da mà không cần phải trải qua các thủ tục chăm sóc da phức tạp.
+				</p>
+			</div>
+		</div>
+		/Product Introduction Section -->
 
 	<!-- FOOTER -->
 	<footer id="footer" class="section section-grey">

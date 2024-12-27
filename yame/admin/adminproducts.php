@@ -32,6 +32,8 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
 	<script src="../js/extrafunction.js"></script>
 	<script src="js/admin.js"></script>
 
@@ -55,72 +57,49 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header">
 			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-
-					<!-- Search -->
-					<div class="header-search">
-						<form action="products.php" method="GET" onsubmit="return true" name="Search">
-							<input class="input search-input" type="text" placeholder="Enter your keyword" name="txtSearch"
-								<?php
-									if (isset($_GET['txtSearch']))
-										echo "value=\"".$_GET['txtSearch']."\"";
-								?>
-							>
-							<button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
-						</form>
-					</div>
-					<!-- /Search -->
-				</div>
+				
 				<div class="pull-right">
 					<ul class="header-btns">
-					<?php include('php/account.php'); ?>
+						<?php include('php/account.php'); ?>
 
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
+						<!-- <li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
+						</li> -->
 					</ul>
 				</div>
 			</div>
-			<!-- header -->
 		</div>
-		<!-- container -->
+
 	</header>
 	<!-- /HEADER -->
 
-	<?php include('php/navigationProduct.php'); ?>
 
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
+		<?php include('php/navigationProduct.php'); ?>
+
 			<!-- row -->
-			<div class="row">
-				<!-- ASIDE -->
-				<div id="aside" class="col-md-3">
+			<div class="row row-admin">
+				<!-- MAIN -->
+				<div id="main" class="col-md-9">
+					
+					<!-- store top filter -->
+					<div class="store-filter clearfix">
+						<div class="pull-right">
+						<button id="filterToggleBtn" class="btn btn-primary">
+							<i class="fa fa-filter"></i>
+						</button>
+						<a href="adminproducts.php" class="btn btn-primary"><i class="fa fa-refresh"></i></a>				
+						<a href="admin-add-product.php" class="btn btn-primary"> THÊM SẢN PHẨM</a>
+
+						<!-- ASIDE -->
+				<div id="filterForm" class="col-md-3" style="display: none;">
 					<!-- aside widget -->
 					<form action="adminproducts.php" method="GET" id="formAdvanceSearch" name="formAdvanceSearch" onsubmit="return checkAdvancedSearch()">
 						<div class="aside">
@@ -231,12 +210,6 @@
 					<!-- /aside widget -->
 				</div>
 				<!-- /ASIDE -->
-
-				<!-- MAIN -->
-				<div id="main" class="col-md-9">
-					<!-- store top filter -->
-					<div class="store-filter clearfix">
-						<div class="pull-right">
 							<ul class="store-pages">
 								<?php
 									//Initiation
@@ -264,7 +237,8 @@
 																				ProductName = '".$_POST['qtxtProductName']."',
 																				ProductTypeID = '$TypeID',
 																				UnitPrice = '".$_POST['qtxtPrice']."',
-																				Quantity = '".$_POST['qtxtQuantity']."'
+																				Quantity = '".$_POST['qtxtQuantity']."',
+																				Description = '".$_POST['qtxtDescription']."'
 											WHERE ProductID = '".$ProductID."'";
 											DataProvider::executeQuery($sql_update);
 											echo "<script>alert('Đã sửa thành công')</script>";
@@ -466,10 +440,14 @@ $txtTo = intval($txtTo); // Chuyển đổi chuỗi thành số nguyên
 							?>
 						</div>
 						<!-- /row -->
+
+						
 					</div>
 					<!-- /STORE -->
+					 
 				</div>
 				<!-- /MAIN -->
+				 
 			</div>
 			<!-- /row -->
 		</div>
@@ -477,28 +455,7 @@ $txtTo = intval($txtTo); // Chuyển đổi chuỗi thành số nguyên
 	</div>
 	<!-- /section -->
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
+	
 
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>
@@ -507,7 +464,17 @@ $txtTo = intval($txtTo); // Chuyển đổi chuỗi thành số nguyên
 	<script src="../js/nouislider.min.js"></script>
 	<script src="../js/jquery.zoom.min.js"></script>
 	<script src="../js/main.js"></script>
-
+	<script>
+    document.getElementById("filterToggleBtn").addEventListener("click", function () {
+        const filterForm = document.getElementById("filterForm");
+        // Toggle hiển thị form
+        if (filterForm.style.display === "none") {
+            filterForm.style.display = "block";
+        } else {
+            filterForm.style.display = "none";
+        }
+    });
+</script>
 </body>
 
 </html>

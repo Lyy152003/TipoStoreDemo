@@ -88,6 +88,67 @@
 					<!-- aside widget -->
 					<form action="products.php" method="GET" id="formAdvanceSearch" name="formAdvanceSearch" onsubmit="return checkAdvancedSearch()">
 						<div class="aside">
+							<div class="filter-gender">
+								<a href="products.php" class="filter-link" >Tất cả</a>
+								<a href="products.php?slcGender=Nam" class="filter-link <?php echo (isset($_GET['slcGender']) && $_GET['slcGender'] == 'Nam') ? 'active' : ''; ?>">Nam</a>
+								<a href="products.php?slcGender=Nữ" class="filter-link <?php echo (isset($_GET['slcGender']) && $_GET['slcGender'] == 'Nữ') ? 'active' : ''; ?>">Nữ </a>
+							</div>
+							
+							<div class="filter-producttype">
+								<h3 class="aside-title" onclick="toggleFilterList()">
+									SỨC KHỎE VÀ LÀM ĐẸP: 
+									<span class="icon-toggle">▼</span>
+								</h3>
+								<div id="filter-list" class="filter-list hidden">
+								<?php
+								require_once("DataProvider.php");
+
+								// Truy vấn danh sách các danh mục sản phẩm, loại sản phẩm và số lượng sản phẩm trong mỗi loại
+								$sql = "SELECT pt.Category, pt.ProductTypeName, COUNT(p.ProductID) AS productCount 
+										FROM producttype pt
+										LEFT JOIN product p ON pt.ProductTypeID = p.ProductTypeID 
+										GROUP BY pt.Category, pt.ProductTypeName";
+								$Type = DataProvider::executeQuery($sql);
+								$type = isset($_GET['slcType']) ? $_GET['slcType'] : "";
+
+								// Khởi tạo mảng để lưu các danh mục và loại sản phẩm
+								$categories = [];
+
+								while ($row = mysqli_fetch_array($Type, MYSQLI_BOTH)) {
+									$category = $row['Category'];
+									$productType = $row['ProductTypeName'];
+									$productCount = $row['productCount'];
+
+									// Lưu các loại sản phẩm vào mảng categories theo từng danh mục
+									$categories[$category][] = [
+										'productType' => $productType,
+										'productCount' => $productCount
+									];
+								}
+
+								// Hiển thị các danh mục và loại sản phẩm tương ứng
+								foreach ($categories as $category => $productTypes) {
+									echo '<div class="category-section">';
+									echo '<p>' . htmlspecialchars($category) . '</p>'; // Hiển thị tên danh mục
+
+									// Hiển thị các loại sản phẩm thuộc danh mục này
+									foreach ($productTypes as $productTypeData) {
+										$productType = $productTypeData['productType'];
+										$productCount = $productTypeData['productCount'];
+
+										// Tạo liên kết cho từng loại sản phẩm trong danh mục
+										echo '<a href="products.php?slcType=' . urlencode($productType) . '" 
+												class="filter-link ' . (($type == $productType) ? 'active' : '') . '">'
+											. htmlspecialchars($productType) . ' (' . $productCount . ')</a><br>';
+									}
+									
+									echo '</div>';
+								}
+								?>
+
+								</div>
+							</div>
+
 							<h3 class="aside-title">Tìm kiếm nâng cao:</h3>
 							<?php
 								if (isset($_GET['txtSearch']))
@@ -189,7 +250,43 @@
 
 							<button class="primary-btn aside-button" type="reset">Làm mới</button>
 							<button class="primary-btn aside-button" type="submit">Tìm kiếm</button>
+							<br></br>
+							<div class="filter-productbrand">
+								<h3 class="aside-title">
+									THƯƠNG HIỆU: 
+								</h3>
+								<div id="filter-list">
+								<?php
+								// Truy vấn danh sách các thương hiệu và số lượng sản phẩm trong mỗi thương hiệu
+								$sql = "SELECT Brand, COUNT(ProductID) AS productCount 
+										FROM product 
+										GROUP BY Brand";
+								$brands = DataProvider::executeQuery($sql);
+								$brand = isset($_GET['slcBrand']) ? $_GET['slcBrand'] : ""; // Nhận thương hiệu từ URL nếu có
+								// Kiểm tra kết quả trả về từ truy vấn
+								if (mysqli_num_rows($brands) > 0) {
+									// Lặp qua từng thương hiệu và hiển thị chúng
+									while ($row = mysqli_fetch_array($brands, MYSQLI_BOTH)) {
+										$brandName = $row['Brand'];
+										$productCount = $row['productCount'];
+
+										// Tạo liên kết cho từng thương hiệu, nếu thương hiệu đã được chọn thì thêm class 'active'
+										echo '<a href="products.php?slcBrand=' . urlencode($brandName) . '" 
+												class="filter-link ' . (($brand == $brandName) ? 'active' : '') . '">'
+											. htmlspecialchars($brandName) . ' (' . $productCount . ')</a><br>';
+									}
+								} else {
+									echo "<p>Không có thương hiệu nào.</p>";
+								}
+								?>
+
+
+								</div>
+							</div>
+							
 						</div>
+
+						
 					</form>
 					<!-- /aside widget -->
 				</div>
@@ -270,6 +367,15 @@
 										$sql_where .= " AND Gender ='$Gender'";
 									}
 									//add $sql for Gender
+
+									//add $sql for Brand
+									if(isset($_GET['slcBrand']))
+									{
+										$Brand = $_GET['slcBrand'];
+										if ($Brand != "")
+										$sql_where .= " AND Brand ='$Brand'";
+									}
+									//add $sql for Brand
 
 									//Merge $sql
 									if($sql_where != "")
@@ -488,7 +594,27 @@
 	<script src="js/nouislider.min.js"></script>
 	<script src="js/jquery.zoom.min.js"></script>
 	<script src="js/main.js"></script>
+	<script>
+		function toggleFilterList(event) {
+    const filterList = document.getElementById('filter-list');
+    const icon = document.querySelector('.icon-toggle');
+    const isHidden = filterList.classList.toggle('hidden'); // Toggle trạng thái ẩn/hiển
+    icon.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)'; // Ẩn -> rotate(0deg), Hiển -> rotate(180deg)
+    localStorage.setItem('filterListState', isHidden ? 'hidden' : 'visible'); // Lưu trạng thái
+}
 
+// Khôi phục trạng thái khi trang tải lại
+document.addEventListener('DOMContentLoaded', () => {
+    const filterList = document.getElementById('filter-list');
+    const icon = document.querySelector('.icon-toggle');
+    const savedState = localStorage.getItem('filterListState') || 'visible'; // Mặc định hiển thị
+    const isHidden = savedState === 'hidden';
+    filterList.classList.toggle('hidden', isHidden); // Ẩn nếu trạng thái là 'hidden'
+    icon.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)'; // Ẩn -> rotate(0deg), Hiển -> rotate(180deg)
+});
+
+
+	</script>
 </body>
 
 </html>

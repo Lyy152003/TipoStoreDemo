@@ -77,43 +77,57 @@
 		<!-- /container -->
 	</div>
 	<!-- /NAVIGATION -->
-
 	<!-- HOME -->
 	<div id="home">
-		<!-- container -->
-		<div class="container">
-			<!-- home wrap -->
-			<div class="home-wrap">
-				<!-- home slick -->
-				<div id="home-slick">
-					<!-- banner -->
-					<div class="banner banner-1">
-						<img src="./images/banner01.jpeg" alt="">
-					</div>
-					<!-- /banner -->
-
-					<!-- banner -->
-					<div class="banner banner-1">
-						<img src="./images/banner02.jpeg" alt="">
-					</div>
-					<!-- /banner -->
-
-					<!-- banner -->
-					<div class="banner banner-1">
-						<img src="./images/banner03.jpeg" alt="">
-					</div>
-					<!-- /banner -->
+			<!-- container -->
+			<div class="container-home">
+				<div class="ad-section-left">
+					<ul>
+						<li><img src="./images/Banner/banner05.gif" alt="Ad 1"></li>
+					</ul>
 				</div>
-				<!-- /home slick -->
+				<!-- home wrap -->
+				<div class="home-wrap">
+					<!-- home slick -->
+					<div id="home-slick">
+						<!-- banner -->
+						<div class="banner banner-1">
+							<img src="./images/Banner/banner01.jpg" alt="">
+						</div>
+						<!-- /banner -->
+
+						<!-- banner -->
+						<div class="banner banner-1">
+							<img src="./images/Banner/banner02.jpg" alt="">
+						</div>
+						<!-- /banner -->
+
+						<!-- banner -->
+						<div class="banner banner-1">
+							<img src="./images/Banner/banner03.jpg" alt="">
+						</div>
+						<!-- /banner -->
+
+						 <!-- banner -->
+						<div class="banner banner-1">
+							<img src="./images/Banner/banner04.jpg" alt="">
+						</div>
+						<!-- /banner -->
+					</div>
+					<!-- /home slick -->
+				</div>
+				<!-- /home wrap -->
+				<div class="ad-section-right">
+					<ul>
+						<li><img src="./images/Banner/banner06.jpg" alt="Ad 1"></li>
+					</ul>
+				</div>
 			</div>
-			<!-- /home wrap -->
-		</div>
-		<!-- /container -->
+			<!-- /container -->
 	</div>
 	<!-- /HOME -->
-
 	<!-- section -->
-	<div class="section">
+	<div class="section section-index">
 		<!-- container -->
 		<div class="container">
 			<!-- row -->
@@ -121,7 +135,7 @@
 				<!-- section title -->
 				<div class="col-md-12">
 					<div class="section-title">
-						<h2 class="title">New Item</h2>
+						<h2 class="title"> Sản phẩm mới </h2>
 					</div>
 				</div>
 				<!-- section title -->
@@ -133,6 +147,29 @@
 						echo "<!-- Product Single -->";
 						echo "<form name='products' id='products' action='php/cart.php' method='POST'>";
 						echo "<div class='col-md-3 col-sm-6 col-xs-6'>";
+						echo "<div class='new-label'>New</div>";
+						include('php/productsingle.php');
+						echo "</div>";
+						echo "</form>";
+						echo "<!-- /Product Single -->";
+					}
+				?>
+				<!-- section title -->
+				<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title"> Sản phẩm hot </h2>
+					</div>
+				</div>
+				<!-- section title -->
+				<?php
+					$sql = "SELECT * FROM Product WHERE isTrending = 1 ORDER BY Date DESC LIMIT 0,4";
+					$result = DataProvider::executeQuery($sql);
+					while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+					{
+						echo "<!-- Product Single -->";
+						echo "<form name='products' id='products' action='php/cart.php' method='POST'>";
+						echo "<div class='col-md-3 col-sm-6 col-xs-6'>";
+						echo "<div class='new-label'>Hot</div>";
 						include('php/productsingle.php');
 						echo "</div>";
 						echo "</form>";
@@ -145,59 +182,97 @@
 		</div>
 		<!-- /container -->
 	</div>
-	<!-- video-deco -->
-	<div class="video-decoration">
-                        <video autoplay muted loop>
-                        <source src="./images/video/deco.mp4" type="video/mp4">
-                        </video>
+
+
+	<!-- About Us -->
+	<div class="container-about">
+
+    	<!-- Phần bên trái -->
+		<div class="left">
+		<img src="./images/nena.gif" alt="Product Intro">
+		</div>
+
+		<!-- Phần bên phải -->
+		<div class="right">
+
+			<!-- Title -->
+			<div class="title">
+				<h2>Facial Skin care</h2>
+				<p>Khám phá những sản phẩm làm sạch phù hợp cho quy trình chăm sóc da của bạn, giúp da luôn khỏe mạnh và rạng rỡ</p>
+			</div>
+
+			<!-- Sản phẩm -->
+			<div class="products">
+
+				<!-- Button Previous -->
+				<button class="prev-btn">&lt;</button>
+
+				<!-- Product Items -->
+				<div class="product-list">
+					<?php
+					$sql = "SELECT * FROM Product p 
+							JOIN ProductType pt ON p.ProductTypeID = pt.ProductTypeID 
+							WHERE pt.ProductTypeName = 'Sữa rửa mặt'";
+
+					$result = DataProvider::executeQuery($sql);
+
+					while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+						echo "<!-- Product Single -->";
+								echo "<form name='products' id='products' action='php/cart.php' method='POST'>";
+								include('php/productsingle.php');
+								echo "</form>";
+								echo "<!-- /Product Single -->";
+					}
+					
+					?>
+					
+				</div>
+				<button class="next-btn">&gt;</button>
+
+				<!-- Button Next -->
+			</div>
+		</div>
     </div>
 
-	<div class="section-feedback">
-                <div class="feedback-container">
-                    <div class="customer-feedback">
-                        <div class="stars">
-                            <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
-                        </div>
-                        <div class="question">
-                            <h3>Great product</h3>
-                            <p>Great product, very fast shipping 😍👍</p>
-                            <i>Anastasiia Shevchenko, 4 days ago</i>
-                        </div>
-                    </div>
-                    <div class="customer-feedback">
-                        <div class="stars">
-                            <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
-                        </div>
-                        <div class="question">
-                            <h3>Great Variety</h3>
-                            <p>I love everything in the box. I received 6 items. Some were of my own choices and the ...</p>
-                            <i>Cynthia Stanley, 2 days ago</i>
-                        </div>
-                    </div>
-                    <div class="customer-feedback">
-                        <div class="stars">
-                            <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
-                        </div>
-                        <div class="question">
-                            <h3>Smooth experience</h3>
-                            <p>Smooth experience, fast international shipping,...</p>
-                            <i>Mel </i>
-                        </div>
-                    </div>
-                    <div class="customer-feedback">
-                        <div class="stars">
-                            <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
-                        </div>
-                        <div class="question">
-                            <h3>Great Products, Quick Delivery</h3>
-                            <p>My products came very quickly and I love them.😇😘</p>
-                            <i>Nancy</i>
-                        </div>
-                    </div>
-                </div>
-            </div>
 	<!-- /section -->
+	 <!-- Member Benefits Section -->
+	<div class="member-benefits">
+    	<h2><span>Ưu đãi thành viên</span></h2>
+		<div class="benefits-container">
+			<!-- First Row -->
+			<div class="benefit-item">
+				<img src="./images/Banner/icon1.png" alt="Icon 1">
+				<h3>ĐĂNG KÝ</h3>
+			</div>
+			<div class="benefit-item">
+				<img src="./images/Banner/icon2.png"alt="Icon 2">
+				<h3>ƯU ĐÃI THÀNH VIÊN</h3>
+			</div>
+			<div class="benefit-item">
+				<img src="./images/Banner/icon3.png" alt="Icon 3">
+				<h3>ĐIỂM THƯỞNG</h3>
+			</div>
+			<div class="benefit-item">
+				<img src="./images/Banner/icon4.png" alt="Icon 4">
+				<h3>VOUCHER</h3>
+			</div>
+			<div class="benefit-item">
+				<img src="./images/Banner/icon5.png" alt="Icon 5">
+				<h3>DỊCH VỤ GIAO HÀNG</h3>
+			</div>
+			<div class="benefit-item">
+				<img src="./images/Banner/icon6.png" alt="Icon 6">
+				<h3>PHƯƠNG THỨC THANH TOÁN</h3>
+			</div>
+		</div>
+	</div>
+	<!-- /Member Benefits Section -->
+	<!-- <div class="img-deco">
+		<img src="./images/nenc.png" alt="Decoration Image">
+	</div> -->
 	<br><br>
+
+
 	<!-- FOOTER -->
 	<footer id="footer" class="section section-grey">
 		<!-- container -->
@@ -286,7 +361,50 @@
 	<script src="js/nouislider.min.js"></script>
 	<script src="js/jquery.zoom.min.js"></script>
 	<script src="js/main.js"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+  const nextBtn = document.querySelector('.next-btn');
+  const prevBtn = document.querySelector('.prev-btn');
+  const productList = document.querySelector('.product-list');
+  let currentIndex = 0; // Vị trí sản phẩm hiện tại
 
+  const products = document.querySelectorAll('.product-list form');
+  const productsPerPage = 2; // Số sản phẩm muốn hiển thị mỗi lần
+
+  // Hàm cập nhật sản phẩm hiển thị
+  function updateProductDisplay() {
+    // Ẩn tất cả sản phẩm
+    products.forEach((product, index) => {
+      if (index < currentIndex || index >= currentIndex + productsPerPage) {
+        product.style.display = 'none';
+      } else {
+        product.style.display = 'inline-block';
+      }
+    });
+	
+  }
+
+  // Hiển thị các sản phẩm khi tải trang
+  updateProductDisplay();
+
+  // Sự kiện cho nút "Next"
+  nextBtn.addEventListener('click', function () {
+    if (currentIndex + productsPerPage < products.length) {
+      currentIndex += productsPerPage; // Di chuyển đến các sản phẩm tiếp theo
+      updateProductDisplay(); // Cập nhật hiển thị
+    }
+  });
+
+  // Sự kiện cho nút "Prev"
+  prevBtn.addEventListener('click', function () {
+    if (currentIndex - productsPerPage >= 0) {
+      currentIndex -= productsPerPage; // Di chuyển về các sản phẩm trước đó
+      updateProductDisplay(); // Cập nhật hiển thị
+    }
+  });
+});
+
+</script>
 </body>
 
 </html>

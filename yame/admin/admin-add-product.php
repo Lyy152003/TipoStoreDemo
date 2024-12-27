@@ -35,6 +35,8 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
 	<script src='js/admin.js'></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,140 +59,198 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header">
 			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-				</div>
+				
 				<div class="pull-right">
 					<ul class="header-btns">
-					<?php include('php/account.php'); ?>
+						<?php include('php/account.php'); ?>
 
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
+						<!-- <li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
+						</li> -->
 					</ul>
 				</div>
 			</div>
-			<!-- header -->
 		</div>
-		<!-- container -->
+
 	</header>
 	<!-- /HEADER -->
 
-	<?php include('php/navigationProduct.php'); ?>
 
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
+		<?php include('php/navigationProduct.php'); ?>
+
 			<!-- row -->
-			<div class="row">
+			<div class="row row-admin">
+				
 				<!-- MAIN -->
 				<div id="main" class="col-md-12">
+				<a href="adminproducts.php" class="btn btn-primary"> <i class="fa fa-home"></i></a> <!-- Change 'index.php' to your homepage URL -->
+
 					<form id='addProduct' name='addProduct' action='admin-add-product.php' method='POST' enctype="multipart/form-data" onsubmit='return checkAddProduct()'>
 						<span id='lblNULL' style='color:red; display:none;'>*: Chưa nhập/Chưa chọn</span>
-						<span class='text-uppercase'>Tên sản phẩm: </span>
-						<?php 
-							echo "<input type='text' name='atxtProductName' id='atxtProductName'";
-							if(isset($_POST['atxtProductName']))
-								echo" value = '".$_POST['atxtProductName']."'>";
-							else
-								echo ">";
-						?>
-						<span id='lblProductNameNULL' style='color:red; display:none;'>*</span>
-						<br><br>
+						<div class="form-row">
+							<span class='text-uppercase'>Tên sản phẩm: </span>
+							<?php 
+								echo "<input type='text' name='atxtProductName' id='atxtProductName'";
+								if(isset($_POST['atxtProductName']))
+									echo" value = '".$_POST['atxtProductName']."'>";
+								else
+									echo ">";
+							?>
+							<span id='lblProductNameNULL' style='color:red; display:none;'>*</span>
+							<br><br>
 
-						<span class='text-uppercase'>Loại sản phẩm: </span>
-						<select name="aslcType" id='aslcType'>
+							<span class='text-uppercase'>Thương hiệu</span>
+							<?php 
+								echo "<input type='text' name='atxtBrandName' id='atxtBrandName'";
+								if(isset($_POST['atxtBrandName']))
+									echo" value = '".$_POST['atxtBrandName']."'>";
+								else
+									echo ">";
+							?>
+							<span id='lblBrandNameNULL' style='color:red; display:none;'>* chưa có</span>
+							<br><br>
+						</div>
+
+						<div class="form-row">
+							<span class='text-uppercase'>Loại sản phẩm: </span>
+							<select name="aslcType" id='aslcType' onchange="updateGenderOptions()">
 							<?php
 								require_once("../DataProvider.php");
+
+								// Truy vấn lấy dữ liệu duy nhất của ProductTypeName
 								$sql = "SELECT DISTINCT ProductTypeName FROM ProductType";
 								$Type = DataProvider::executeQuery($sql);
+
 								$type = "";
-								if(isset($_POST['aslcType']))
-									$type=$_POST['aslcType'];
+								if (isset($_POST['aslcType']))
+									$type = $_POST['aslcType'];
+
+								// Dữ liệu sẽ được lưu vào mảng để tránh trùng lặp
+								$productTypes = array();
+
+								// Lặp qua các dòng kết quả
+								while ($row = mysqli_fetch_array($Type, MYSQLI_BOTH)) {
+									// Loại bỏ khoảng trắng thừa trước và sau mỗi giá trị
+									$productTypeName = trim($row['ProductTypeName']);
+
+									// Chỉ thêm vào mảng nếu tên sản phẩm chưa tồn tại
+									if (!in_array($productTypeName, $productTypes)) {
+										$productTypes[] = $productTypeName;
+									}
+								}
+
+								// Hiển thị giá trị đã chọn
 								echo $type;
-								if($type=="")
+
+								// Thêm tùy chọn rỗng nếu chưa chọn
+								if ($type == "")
 									echo "<option value='' selected></option>";
 								else
 									echo "<option value=''></option>";
-								while($row = mysqli_fetch_array($Type,MYSQLI_BOTH))
-								{
-									if($type == $row['ProductTypeName'])
-										echo "<option value='".$row['ProductTypeName']."' selected>".$row['ProductTypeName']."</option>";
+
+								// Hiển thị các tùy chọn cho danh sách
+								foreach ($productTypes as $productTypeName) {
+									if ($type == $productTypeName)
+										echo "<option value='" . $productTypeName . "' selected>" . $productTypeName . "</option>";
 									else
-										echo "<option value='".$row['ProductTypeName']."'>".$row['ProductTypeName']."</option>";
+										echo "<option value='" . $productTypeName . "'>" . $productTypeName . "</option>";
 								}
 							?>
 						</select>
-						<span id='lblTypeNULL' style='color:red; display:none;'>*</span>
+							<span id='lblTypeNULL' style='color:red; display:none;'>*</span>
 
-						<span class='text-uppercase'>Giới tính: </span>
-						<select name="aslcGender" id='aslcGender'>
-							<?php
-								$gender = array("","Nam","Nữ");
-								$genderPOST="";
-								if(isset($_POST['aslcGender']))
-									$genderPOST=$_POST['aslcGender'];
-								foreach ($gender as $Gender)
-								{
-									if($Gender==$genderPOST)	
-										echo "<option value='".$Gender."' selected>".$Gender."</option>";
-									else
-										echo "<option value='".$Gender."'>".$Gender."</option>";
-								}
+							<!-- Giới tính -->
+							<span class='text-uppercase'>Giới tính: </span>
+							<select name="aslcGender" id='aslcGender'>
+								<?php
+									// Lấy giá trị loại sản phẩm đã chọn
+									$genderPOST = "";
+									if (isset($_POST['aslcGender'])) {
+										$genderPOST = $_POST['aslcGender'];
+									}
+
+									// Nếu đã chọn loại sản phẩm, lấy giới tính tương ứng
+									if ($type != "") {
+										// Truy vấn lấy các giới tính tương ứng với loại sản phẩm đã chọn
+										$sqlGender = "SELECT DISTINCT Gender FROM ProductType WHERE ProductTypeName = '$type'";
+										$GenderResult = DataProvider::executeQuery($sqlGender);
+
+										// Mảng chứa giới tính không trùng lặp
+										$genders = array();
+
+										// Lặp qua các giới tính trả về từ cơ sở dữ liệu
+										while ($row = mysqli_fetch_array($GenderResult, MYSQLI_BOTH)) {
+											$genderName = trim($row['Gender']);
+											// Thêm giới tính vào mảng nếu chưa tồn tại
+											if (!in_array($genderName, $genders)) {
+												$genders[] = $genderName;
+											}
+										}
+
+										// Hiển thị các giới tính
+										echo "<option value=''></option>"; // Tùy chọn trống
+
+										foreach ($genders as $gender) {
+											if ($gender == $genderPOST) {
+												echo "<option value='" . $gender . "' selected>" . $gender . "</option>";
+											} else {
+												echo "<option value='" . $gender . "'>" . $gender . "</option>";
+											}
+										}
+									}
+								?>
+							</select>
+<br><br>
+
+							<span id='lblGenderNULL' style='color:red; display:none;'>*</span>
+							<p id='lblTypeError' style='color:red; display:inline-block'></p>
+							<br><br>
+						</div>
+
+					
+						<div class="form-row">
+							<span class='text-uppercase'>Giá: </span>
+							<?php 
+								echo "<input type='text' name='atxtPrice' id='atxtPrice'";
+								if(isset($_POST['atxtPrice']))
+									echo" value = ".$_POST['atxtPrice'].">";
+								else
+									echo ">";
 							?>
-						</select>
-						<span id='lblGenderNULL' style='color:red; display:none;'>*</span>
-						<p id='lblTypeError' style='color:red; display:inline-block'></p>
-						<br><br>
+							<span id='lblPriceNULL' style='color:red; display:none;'>*</span>
+							<span id='lblPriceNoError' style='color:red; display:none;'>Giá nhập phải là số</span>
+							<br><br>
 
-						
+							<span class='text-uppercase'>Số Lượng: </span>
+							<?php 
+								echo "<input type='text' name='atxtQuantity' id='atxtQuantity'";
+								if(isset($_POST['atxtQuantity']))
+									echo" value = ".$_POST['atxtQuantity'].">";
+								else
+									echo ">";
+							?>
+							<span id='lblQuantityNULL' style='color:red; display:none;'>*</span>
+							<span id='lblQuantityNoError' style='color:red; display:none;'>Số lượng nhập phải là số</span>
+							<br><br>
+						</div>
 
-						<span class='text-uppercase'>Giá: </span>
+						<span class='text-uppercase'>Mô tả sản phẩm</span>
 						<?php 
-							echo "<input type='text' name='atxtPrice' id='atxtPrice'";
-							if(isset($_POST['atxtPrice']))
-								echo" value = ".$_POST['atxtPrice'].">";
+							echo "<input type='text' name='atxtDescription' id='atxtDescription'";
+							if(isset($_POST['atxtDescription']))
+								echo" value = '".$_POST['atxtDescription']."'>";
 							else
 								echo ">";
 						?>
-						<span id='lblPriceNULL' style='color:red; display:none;'>*</span>
-						<span id='lblPriceNoError' style='color:red; display:none;'>Giá nhập phải là số</span>
-						<br><br>
-
-						<span class='text-uppercase'>Số Lượng: </span>
-						<?php 
-							echo "<input type='text' name='atxtQuantity' id='atxtQuantity'";
-							if(isset($_POST['atxtQuantity']))
-								echo" value = ".$_POST['atxtQuantity'].">";
-							else
-								echo ">";
-						?>
-						<span id='lblQuantityNULL' style='color:red; display:none;'>*</span>
-						<span id='lblQuantityNoError' style='color:red; display:none;'>Số lượng nhập phải là số</span>
+						<span id='lblDescriptionNULL' style='color:red; display:none;'>* chưa có</span>
 						<br><br>
 
 						<span class='text-uppercase'>Chọn Hình: </span>
@@ -259,11 +319,13 @@
 					$imgName.= ".jpg";
 				else
 					$imgName.=".gif";
-				$sqlAddProduct="INSERT INTO Product(ProductName, ProductTypeID, UnitPrice, Quantity, imgsrc, Date) VALUES (";
+				$sqlAddProduct="INSERT INTO Product(ProductName,Brand, ProductTypeID, UnitPrice, Quantity,Description, imgsrc, Date) VALUES (";
 				$sqlAddProduct.="'".$_POST['atxtProductName']."', ";
+				$sqlAddProduct.="'".$_POST['atxtBrandName']."', ";
 				$sqlAddProduct.="'".$txtProductTypeID."', ";
 				$sqlAddProduct.="'".$_POST['atxtPrice']."', ";
 				$sqlAddProduct.="'".$_POST['atxtQuantity']."', ";
+				$sqlAddProduct.="'".$_POST['atxtDescription']."', ";
 				$sqlAddProduct.="'".$imgName."', ";
 				$sqlAddProduct.="NOW()";
 				$sqlAddProduct.=")";
@@ -277,34 +339,13 @@
 		}
 		else
 		{
-			$message = $_POST['aslcType']." dành cho ".$_POST['aslcGender']." chưa có trong CSDL";
-			echo "<script> document.getElementById('lblTypeError').innerHTML='$message'</script>";
+			// $message = $_POST['aslcType']." dành cho ".$_POST['aslcGender']." chưa có trong CSDL";
+			// echo "<script> document.getElementById('lblTypeError').innerHTML='$message'</script>";
 		}
 	}
 	?>
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" tarPOST="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
+	
 
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>
@@ -313,7 +354,40 @@
 	<script src="../js/nouislider.min.js"></script>
 	<script src="../js/jquery.zoom.min.js"></script>
 	<script src="../js/main.js"></script>
+<SCript>
+	function updateGenderOptions() {
+    var selectedType = document.getElementById('aslcType').value;
+    var genderDropdown = document.getElementById('aslcGender');
+    
+    // Reset dropdown gender
+    genderDropdown.innerHTML = "<option value=''></option>";
 
+    // Kiểm tra xem đã chọn loại sản phẩm hay chưa
+    if (selectedType !== "") {
+        // Gửi yêu cầu Ajax để lấy các giới tính tương ứng
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "getGenders.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var genders = JSON.parse(xhr.responseText);
+                
+                // Hiển thị các giới tính nhận được từ server
+                genders.forEach(function(gender) {
+                    var option = document.createElement("option");
+                    option.value = gender;
+                    option.text = gender;
+                    genderDropdown.appendChild(option);
+                });
+            }
+        };
+
+        xhr.send("type=" + selectedType);
+    }
+}
+
+</SCript>
 </body>
 
 </html>

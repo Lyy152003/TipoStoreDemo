@@ -35,6 +35,9 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="../css/style.css" />
 	<link type="text/css" rel="stylesheet" href="../css/extrastyle.css">
+	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
+
+	
 	<script src='js/admin.js'></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -57,63 +60,38 @@
 				$rowUsr=mysqli_fetch_array($Usr,MYSQLI_BOTH);
 			}
 		?>
-		<!-- top Header -->
-		<div id="top-header">
-			<div class="container">
-				<div class="pull-left">
-					<?php
-						include('../php/helloUsr.php');
-					?>
-				</div>
-				<div class="pull-right">
-					<ul class="header-top-links">
-						<!-- <li><a href="aboutus.html">Giới thiệu</a></li> -->
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- /top Header -->
 
 		<!-- header -->
 		<div id="header">
 			<div class="container">
-				<div class="pull-left">
-					<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="../images/logo.png" alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
-				</div>
+				
 				<div class="pull-right">
 					<ul class="header-btns">
 						<?php include('php/account.php'); ?>
 
-						<!-- Mobile nav toggle-->
-						<li class="nav-toggle">
+						<!-- <li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-						</li>
-						<!-- / Mobile nav toggle -->
+						</li> -->
 					</ul>
 				</div>
 			</div>
-			<!-- header -->
 		</div>
-		<!-- container -->
 	</header>
 	<!-- /HEADER -->
 
-	<?php include('php/navigationInvoice.php'); ?>
 
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
-		<div class="container">
+		<div class="container container-admin">
+		<?php include('php/navigationInvoice.php'); ?>
+
 			<!-- row -->
-			<div class="row">
+			<div class="row row-admin">
 				<!-- MAIN -->
 				<div id="main" class="col-md-12">
+
+
 					<table border=1>
 						<tr>
 							<td>Mã Hóa Đơn</td>
@@ -121,8 +99,9 @@
 							<td>Tên Khi Giao</td>
 							<td>SĐT Khi Giao</td>
 							<td>Địa Chỉ Giao</td>
-							<td>Tiền Hàng</td>
-							<td>Ship</td>
+							<td>Tình trạng đơn</td>
+							<!-- <td>Tiền Hàng</td>
+							<td>Ship</td> -->
 							<td>Tổng Cộng</td>
 							<td></td>
 						</tr>
@@ -142,8 +121,18 @@
 								echo "<td>".$row['UsrName']."</td>";
 								echo "<td>".$row['PhoneNo']."</td>";
 								echo "<td>".$row['Address']."</td>";
-								echo "<td>".$row['SubTotal']."</td>";
-								echo "<td>".$row['Ship']."</td>";
+								// Status Dropdown with 4 options
+								echo "<td><select name='status' id='status' data-invoice-id='" . $row['InvoiceID'] . "'>";
+								$statusOptions = ["Chờ xác nhận", "Đã tiếp nhận", "Đang giao hàng", "Hoàn tất đơn hàng ", "Đơn bị Hủy"];
+								
+								foreach ($statusOptions as $statusOption) {
+									$selected = ($row['Status'] == $statusOption) ? 'selected' : 'Chờ xác nhận'; // Mark current status as selected
+									echo "<option value='$statusOption' $selected>$statusOption</option>";
+								}
+								echo "</select></td>";							
+									
+								// echo "<td>".$row['SubTotal']."</td>";
+																// echo "<td>".$row['Ship']."</td>";
 								echo "<td>".$row['Total']."</td>";
 
 								echo "<td><input type='submit' name='btnSubmitInvoice' id='btnSubmitInvoice' value='Xem Chi Tiết'></td>";
@@ -162,28 +151,7 @@
 	</div>
 	<!-- /section -->
 
-	<!-- FOOTER -->
-	<footer id="footer" class="section section-grey">
-		<!-- container -->
-		<div class="container">
-			<hr>
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
-					<!-- footer copyright -->
-					<div class="footer-copyright">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Team Tipo</a>
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-					</div>
-					<!-- /footer copyright -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</footer>
-	<!-- /FOOTER -->
+	
 
 	<!-- jQuery Plugins -->
 	<script src="../js/jquery.min.js"></script>
@@ -192,7 +160,28 @@
 	<script src="../js/nouislider.min.js"></script>
 	<script src="../js/jquery.zoom.min.js"></script>
 	<script src="../js/main.js"></script>
+	<script>
+// JavaScript to handle the status change and update it automatically via AJAX
+document.querySelectorAll('select[name="status"]').forEach(select => {
+    select.addEventListener('change', function() {
+        var invoiceID = this.getAttribute('data-invoice-id');
+        var status = this.value;
 
+        // AJAX request to update status in the database
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'update_invoice_status.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status == 200) {
+                alert('Trạng thái hóa đơn đã được cập nhật!');
+            } else {
+                alert('Có lỗi xảy ra khi cập nhật trạng thái!');
+            }
+        };
+        xhr.send('InvoiceID=' + invoiceID + '&status=' + status);
+    });
+});
+</script>
 </body>
 
 </html>

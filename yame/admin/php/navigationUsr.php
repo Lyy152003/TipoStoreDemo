@@ -2,15 +2,15 @@
 <div id="navigation">
     <!-- container -->
     <div class="container">
-        <div id="responsive-nav">
+        <div id="responsive-nav-admin">
             <!-- menu nav -->
-            <div class="menu-nav">
-                <span class="menu-header">Menu <i class="fa fa-bars"></i></span>
-                <ul class="menu-list">
-                    <li><a href="index.php">Trang chủ</a></li>
-                    <li><a href="adminUser.php">Xóa / Sửa Account</a></li>
-                    <li><a href="admin-add-usr.php">Thêm Account</a></li>
-                    <li><a href="admin-edit-usr-type.php">Sửa quyền user</a></li>
+            <div class="menu-nav-admin">
+                <!-- <span class="menu-header">Menu <i class="fa fa-bars"></i></span> -->
+                <ul class="menu-list-admin">
+                    <li><a href="Dashboard.php">Trang chủ</a></li>
+                    <li><a href="admin-add-usr.php">Quản lý tài khoản</a></li>
+                    <li><a href="admin-add-voucher.php">Quản lý khuyến mãi</a></li>
+
                 </ul>
             </div>
             <!-- menu nav -->

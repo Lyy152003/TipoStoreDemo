@@ -24,4 +24,5 @@
         unset($_SESSION['Cart']);
 
     header('Location: '.$txtURL);
+    exit;
 ?>

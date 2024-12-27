@@ -85,37 +85,50 @@
 	<div class="section">
 		<!-- container -->
 		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<div class="col-md-6">
+			<!-- row --> 
+			<div class="row form-wrapper">
+				<div class="col-md-6" id="login-form">
                     <form name="loginform" action='signin.php' method="POST" class="clearfix" onsubmit="return check_Login();" >
 						<div class="billing-details">
 							<div class="section-title">
-								<h3 class="title">Đăng nhập</h3>
+								<h3 class="title">Đăng nhập thành viên</h3>
 							</div>
 							<div class="form-group">
 								<div class="error">
                                     <p id="wrongID" style="color:red; font-style:italic; display:none;" >*Nhập sai email*</p>
 									<p id="nullID" style="color:red; font-style:italic; display:none;" >*Chưa nhập email*</p>
 								</div>
-								<input class="input" type="text" name="email" placeholder="Nhập email của bạn">
+								<input class="input" type="text" name="email" placeholder="ex. sample@gmail.com">
 							</div>
 							<div class="form-group">
 								<div class="error">
 									<p id="nullIDpass" style="color:red; font-style:italic; display:none;" >*Chưa nhập mật khẩu*</p>
 								</div>
-								<input class="input" type="password" name="pass" placeholder="Nhập password">
+								<input class="input" type="password" name="pass" placeholder="Vui lòng nhập mật khẩu.">
 								<div class="error">
 								<p id="wrongIDpass" style="color:red; font-style:italic; display:none;" >*Mật khẩu không đúng hoặc tài khoản không tồn tại*</p>
 								</div>
 							</div>
 							<div align="center" class="form-group">
-								<input class="primary-btn login" type="submit" name="submitlogin" value="đăng nhập">
+								<input class="primary-btn login" type="submit" name="submitlogin" value="đăng nhập ⭢">
 							</div>
 						</div>
                     </form>
+					 
 				</div>
-				<div class="col-md-6">
+				<!-- Registration Section -->
+				<div class="registration-section" id="phu">
+					<h3 class="title">Đăng ký thành viên mới</h3>
+					<p>
+					Đăng ký ngay để mua sắm dễ dàng hơn và tận hưởng thêm nhiều ưu đãi độc quyền cho thành viên nhé.
+					</p>
+					<button class="primary-btn toggle-btn" onclick="showForm('register')">Đăng ký ⭢</button>
+				</div>
+
+
+				<div class="col-md-6" id="register-form" style="display: none;">
+				<button class="primary-btn toggle-btn" onclick="showForm('login')">Đã có tài khoản</button>
+
                     <form name="signinform" class="clearfix" method="POST" action='signin.php' onsubmit="return check_Signin()";>
                     	<div class="billing-details">
 							<div class="section-title">
@@ -241,8 +254,14 @@
 			$address=$_POST['address'];
 			$sql="SELECT * FROM Usr WHERE Email='$email'";
 			$rs=DataProvider::executeQuery($sql);
-			if(mysqli_num_rows($rs)==1)
-				echo "<script> document.getElementById('existEmail').style.display='block'</script>";
+			if(mysqli_num_rows($rs)==1){
+				echo "<script> alert('Thêm thất bại: Email đã được đăng ký');</script>";
+				echo "<script>
+					document.getElementById('register-form').style.display='block';
+					document.getElementById('login-form').style.display='none';
+					document.getElementById('phu').style.display='none';
+				</script>";			
+			}
 			else
 			{
 				$sql="INSERT INTO Usr (Email, Passwd, UsrName, PhoneNo, Address, Blocked, Authentication) VALUES ('$email', '$passwd', '$fullname', '$phone', '$address', '0', 'Usr')";
@@ -348,7 +367,28 @@
 	<script src="js/jquery.zoom.min.js"></script>
 	<script src="js/main.js"></script>
     <script src="js/extrafunction.js"></script>
+		<script>
+			function showForm(formType) {
+				const loginForm = document.getElementById('login-form');
+				const registerForm = document.getElementById('register-form');
+				const phuForm = document.getElementById('phu');
 
+
+				if (formType === 'login') {
+					loginForm.style.display = 'block';
+					registerForm.style.display = 'none';
+					phuForm.style.display= 'block';
+					
+
+				} else if (formType === 'register') {
+					registerForm.style.display = 'block';
+					loginForm.style.display = 'none';
+					phuForm.style.display= 'none';
+				
+				}
+				
+			}
+		</script>
 </body>
 
 </html>

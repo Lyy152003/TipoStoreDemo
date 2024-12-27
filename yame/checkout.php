@@ -180,11 +180,31 @@
 								}
 						?>
 						<tfoot>
+							<?php
+
+							// Lấy giá trị giảm giá từ session
+							$discount_percentage = isset($_SESSION['discount_percentage']) ? $_SESSION['discount_percentage'] : 0;
+							$discount_amount = isset($_SESSION['discount_amount']) ? $_SESSION['discount_amount'] : 0;
+
+							// Tính tổng tiền sau giảm giá
+							$total_after_discount = $Price - $discount_amount;
+							?>
 							<tr>
 								<th class="empty" colspan="3"></th>
 								<th>Tổng Tiền Hàng</th>
 								<?php echo "<th class='sub-total'><script>document.write(PriceDot(".$Price."))</script></th>" ?>
 								<?php echo "<input type='hidden' name='subTotal' id='subTotal' value='$Price'>"; ?>
+							</tr>
+							<tr>
+								<th class="empty" colspan="3"></th>
+								<th>Giảm Giá</th>
+								<th class='discount'>
+									<strong id="discountAmount" ><?php echo $discount_percentage . "%"; ?></strong>
+									<?php
+									// Gán giá trị giảm giá đã tính toán vào thẻ input
+									echo "<input type='hidden' name='Discount' id='Discount' value='$discount_amount'>";
+									?>
+								</th>
 							</tr>
 							<tr>
 								<th class="empty" colspan="3"></th>

@@ -4,7 +4,7 @@
 	switch($_SESSION['Authentication'])
 	{
 		case "Admin":
-			header('Location: adminUser.php');
+			header('Location: Dashboard.php');
 			break;
 		case "Store":
 			header('Location: adminproducts.php');
