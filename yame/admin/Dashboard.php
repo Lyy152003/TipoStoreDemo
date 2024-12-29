@@ -244,6 +244,8 @@ $totalRevenue[] = $row['totalRevenue'];
             
 
         </div>
+		<?php include('admin-chat.php'); ?>
+
     </div>
 
 	<!-- jQuery Plugins -->

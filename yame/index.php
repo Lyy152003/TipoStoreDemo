@@ -352,6 +352,8 @@
 		</div>
 		<!-- /container -->
 	</footer>
+	<?php include('chat.php'); ?>
+
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
