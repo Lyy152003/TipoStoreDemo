@@ -162,7 +162,7 @@
 				</div>
 				<!-- section title -->
 				<?php
-					$sql = "SELECT * FROM Product WHERE isTrending = 1 ORDER BY Date DESC LIMIT 0,4";
+					$sql = "SELECT * FROM Product WHERE Doanh_so > 10 ORDER BY Doanh_so DESC LIMIT 0,4";
 					$result = DataProvider::executeQuery($sql);
 					while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
 					{

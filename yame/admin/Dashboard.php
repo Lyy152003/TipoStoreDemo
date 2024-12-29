@@ -24,6 +24,36 @@ $sql_products = "SELECT COUNT(*) AS totalProducts FROM product";
 $result_products = DataProvider::executeQuery($sql_products);
 $row_products = mysqli_fetch_assoc($result_products);
 $totalProducts = $row_products['totalProducts'];
+
+
+// truy vấn doanh thu
+// Truy vấn SQL lấy dữ liệu thống kê theo tháng
+$sql = "SELECT 
+MONTH(DateInvoice) AS month,
+SUM(Total) AS totalRevenue
+FROM 
+invoice
+WHERE 
+YEAR(DateInvoice) = YEAR(CURDATE())  -- Lọc theo năm hiện tại
+GROUP BY 
+MONTH(DateInvoice)
+ORDER BY 
+MONTH(DateInvoice)";
+
+$result = DataProvider::executeQuery($sql);
+
+if (!$result) {
+die('Lỗi truy vấn SQL: ' . mysqli_error($conn));
+}
+
+$months = [];
+$totalRevenue = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+$months[] = 'Tháng ' . $row['month']; 
+$totalRevenue[] = $row['totalRevenue'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -155,6 +185,58 @@ $totalProducts = $row_products['totalProducts'];
                             </div>
                             <i class="fas fa-box icon"></i> <!-- Thay bằng Icon hộp đẹp hơn cho sản phẩm -->
                     </div>
+					
+					<h3 class="text-center">Thống Kê Doanh Thu 2024</h3>
+
+					<!-- Bảng thống kê -->
+					<table class="table table-bordered">
+						<thead class="thead-dark">
+							<tr>
+								<th>Tháng</th>
+								<th>Tổng doanh thu (VND)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php for ($i = 0; $i < count($months); $i++) : ?>
+							<tr>
+								<td><?php echo $months[$i]; ?></td>
+								<td><?php echo number_format($totalRevenue[$i]); ?></td>
+							</tr>
+							<?php endfor; ?>
+						</tbody>
+					</table>
+
+					<!-- Biểu đồ doanh thu và số hóa đơn -->
+					<canvas id="revenueChart"style="width: 500px; height: 150px;"></canvas>
+
+					<!-- <h3 class="text-center">Thống Kê số lượng bán ra từng sản phẩm</h3> -->
+
+					<?php
+					$sql_accounts = "SELECT ProductName, Brand, Doanh_so FROM Product ORDER BY Doanh_so DESC";
+					$result_ds = DataProvider::executeQuery($sql_accounts);
+					echo '<h3 class="text-center">Thống Kê số lượng bán ra từng sản phẩm</h3>';
+
+					// Bắt đầu hiển thị bảng
+					echo "<table border='1' cellspacing='0' cellpadding='5' text-align: center;'>";
+					echo "<tr>
+							<th>Tên sản phẩm</th>
+							<th>Thương hiệu</th>
+							<th>Doanh số</th>
+						  </tr>";
+					
+					// Duyệt qua từng dòng kết quả và hiển thị trong bảng
+					while ($row_ds = mysqli_fetch_assoc($result_ds)) {
+						echo "<tr>";
+						echo "<td>" . $row_ds['ProductName'] . "</td>";
+						echo "<td>" . $row_ds['Brand'] . "</td>";
+						echo "<td>" . $row_ds['Doanh_so'] . "</td>";
+						echo "</tr>";
+					}
+					
+					// Kết thúc bảng
+					echo "</table>";
+					?>
+					</div>
 
                 </div>
             </div>
@@ -170,6 +252,31 @@ $totalProducts = $row_products['totalProducts'];
 	<script src="../js/nouislider.min.js"></script>
 	<script src="../js/jquery.zoom.min.js"></script>
 	<script src="../js/main.js"></script>
-
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($months); ?>,
+                datasets: [{
+                    
+                    label: 'Tổng doanh thu (VND)',
+                    data: <?php echo json_encode($totalRevenue); ?>,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
