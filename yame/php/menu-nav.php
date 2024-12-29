@@ -36,7 +36,6 @@
         <li><a href="products.php?slcGender=Nam" class="filter-link <?php echo (isset($_GET['slcGender']) && $_GET['slcGender'] == 'Nam') ? 'active' : ''; ?>">Nam</a></li>
         <li><a href="products.php?slcGender=Nữ" class="filter-link <?php echo (isset($_GET['slcGender']) && $_GET['slcGender'] == 'Nữ') ? 'active' : ''; ?>">Nữ</a></li>
         <!-- <li><a href="checkout.php">Thanh Toán</a></li> -->
-        <!-- <li><a href="infor.php">Tin tức & Sự kiện</a></li> -->
 
 
     </ul>

@@ -386,7 +386,7 @@ form input[type="submit"]:active {
 
 .clearfix .input:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #F8694A;
     box-shadow: 0 0 3px rgba(0, 123, 255, 0.3);
 }
 
@@ -420,7 +420,7 @@ form input[type="submit"]:active {
 }
 
 .clearfix .primary-btn:hover {
-    background-color: #0056b3;
+    background-color: #F8694A;
 }
 
 /* Nút reset */
@@ -603,7 +603,7 @@ form input[type="submit"]:active {
 /* Hiệu ứng hover và focus cho input */
 #addUserForm .input:hover,
 #addUserForm .input:focus {
-    border-color: #007bff; /* Màu viền xanh khi hover */
+    border-color: #F8694A; /* Màu viền xanh khi hover */
     box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.6); /* Hiệu ứng viền ánh sáng */
     outline: none; /* Loại bỏ viền focus mặc định */
 }
@@ -623,12 +623,12 @@ form input[type="submit"]:active {
 
 /* Tùy chỉnh màu sắc nút */
 #addUserForm .primary-btn.register {
-    background-color: #007bff;
+    background-color: #F8694A;
     color: #fff;
 }
 
 #addUserForm .primary-btn.register:hover {
-    background-color: #0056b3;
+    background-color: #F8694A;
     transform: translateY(-2px); /* Hiệu ứng di chuyển nút khi hover */
     box-shadow: 0px 4px 10px rgba(0, 91, 179, 0.6); /* Bóng khi hover */
 }
@@ -664,7 +664,7 @@ form input[type="submit"]:active {
 
 #addUserForm select:hover,
 #addUserForm select:focus {
-    border-color: #007bff;
+    border-color: #F8694A;
     box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.6);
     outline: none;
 }
@@ -688,14 +688,14 @@ form input[type="submit"]:active {
     color: black; /* Ensure the X stays white when hovered */
 }
 #addUserForm input[type="submit"] {
-    background-color: #007bff;
+    background-color: #F8694A;
     color: white;
     border: none;
     padding: 10px;
     cursor: pointer;
 }
 #addUserForm input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #F8694A;
 }
 
 /* admin-filler */
@@ -774,7 +774,7 @@ height: 100%;}
 #addProduct input[type="text"]:focus,
 #addProduct select:focus,
 #addProduct input[type="file"]:focus {
-    border-color: #0056b3;
+    border-color: #F8694A;
     outline: none;
 }
 
@@ -831,4 +831,19 @@ height: 100%;}
 /* Remove default margin of the form elements */
 #addProductType input[type="text"], #addProductType select {
     margin-bottom: 10px;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-pending {
+    background-color: red; /* Màu đỏ cho "Chưa xử lý" */
+}
+
+.status-completed {
+    background-color: green; /* Màu xanh lá cây cho "Đã xử lý" */
 }

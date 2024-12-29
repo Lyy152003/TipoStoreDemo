@@ -130,19 +130,48 @@
                                                 <th>Ngày mua hàng</th>
                                                 <th>Tổng tiền</th>
                                                 <th>Chi tiết</th>
-												<th>Tình trạng</th>
+												<th>Tình trạng đơn hàng</th>
+												<th>Khiếu nại</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>";
 
                                 while ($row = mysqli_fetch_assoc($result)) {
-                                    // Hiển thị thông tin hóa đơn
+
+									$invoiceID = $row['InvoiceID']; // Lấy ID hóa đơn
+									
+									// Truy vấn để kiểm tra nếu hóa đơn này đã có khiếu nại
+									$sqlComplaint = "SELECT * FROM complaint WHERE InvoiceID = $invoiceID";
+									$resultComplaint = DataProvider::executeQuery($sqlComplaint);
+
+									if (mysqli_num_rows($resultComplaint) > 0) {
+										// Nếu có khiếu nại, lấy thông tin khiếu nại
+										$complaint = mysqli_fetch_assoc($resultComplaint);
+										$complaintID = $complaint['ComplaintID']; // Lấy ComplaintID
+										$status = $complaint['Status']; // Lấy trạng thái khiếu nại
+										$adminReply = $complaint['AdminReply']; // Lấy phản hồi của admin
+										
+										// Định nghĩa phản hồi mặc định của admin
+										$defaultReply = "Kính gửi Quý khách, Cảm ơn quý khách đã liên hệ với chúng tôi. Chúng tôi rất tiếc khi nghe về sự bất tiện mà quý khách gặp phải. Chúng tôi đang tiến hành kiểm tra vấn đề của quý khách và sẽ sớm phản hồi lại với giải pháp thích hợp. Chúng tôi cam kết sẽ nỗ lực hết mình để khắc phục sự cố và mang lại trải nghiệm tốt nhất cho quý khách. Nếu quý khách có thêm bất kỳ câu hỏi hay yêu cầu nào, xin đừng ngần ngại liên hệ lại với chúng tôi. Xin chân thành cảm ơn quý khách đã thông cảm và kiên nhẫn. Trân trọng, TIPO.";
+										
+										if ($status == 0 && ($adminReply == $defaultReply || empty($adminReply))) {
+											// Nếu khiếu nại chưa xử lý và phản hồi admin là mặc định
+											$complaintLink = "<a href='complaint-details.php?complaintID=" . $complaintID . "'>Chờ phản hồi tự Admin nhé 💁 </a>";
+										} elseif ($status == 1 && $adminReply != $defaultReply) {
+											// Nếu khiếu nại đã xử lý và phản hồi admin khác với mặc định
+											$complaintLink = "<a href='complaint-details.php?complaintID=" . $complaintID . "'>Admin đã phản hồi 💬</a>";
+										}
+									} else {
+										// Nếu không có khiếu nại, hiển thị đường link để tạo khiếu nại
+										$complaintLink = "<a href='create-complaint.php?invoiceID=" . $invoiceID . "'>😱 Khiếu nại về đơn hàng 😱</a>";
+									}
                                     echo "<tr>
                                             <td>" . $row['DateInvoice'] . "</td>
                                             <td>" . $row['Total'] . " VNĐ</td>
                                             <td><a href='invoice-details.php?invoiceID=" . $row['InvoiceID'] . "'>Xem chi tiết 👈</a></td>
                                             <td>" . $row['Status'] . "</td>
+                							<td>" . $complaintLink . "</td> <!-- Hiển thị liên kết khiếu nại -->
 
                                         </tr>";
                                 }

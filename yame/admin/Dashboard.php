@@ -96,6 +96,7 @@ $totalRevenue[] = $row['totalRevenue'];
 	<link type="text/css" rel="stylesheet" href="../css/adminbonus.css">
 
 	<script src='js/admin.js'></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -263,8 +264,8 @@ $totalRevenue[] = $row['totalRevenue'];
                     
                     label: 'Tổng doanh thu (VND)',
                     data: <?php echo json_encode($totalRevenue); ?>,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+					backgroundColor: 'rgba(255, 140, 0, 0.6)', // Dark Orange
+                    borderColor: '#F8694A',
                     borderWidth: 1
                 }]
             },
