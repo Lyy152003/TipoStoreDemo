@@ -11,7 +11,6 @@
                     <li><a href="admin-add-usr.php">Quản lý tài khoản</a></li>
                     <li><a href="admin-add-voucher.php">Quản lý khuyến mãi</a></li>
                     <li><a href="admin-complaint.php">Quản lý hòm thư khiếu nại</a></li>
-                    <li><a href="admin-chat.php">chat</a></li>
 
                 </ul>
             </div>

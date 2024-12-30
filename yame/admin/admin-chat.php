@@ -131,7 +131,7 @@
         reader.onload = function() {
             message = reader.result;  // Chuyển Blob thành chuỗi
             const messageElement = document.createElement("div");
-            messageElement.textContent = `Admin: ${message}`;
+            messageElement.textContent = `${message}`;
             document.getElementById("chatbox-body").appendChild(messageElement);
             document.getElementById('toggle-btn').classList.add('blink');
 
@@ -140,7 +140,7 @@
     } else {
         // Nếu message là chuỗi bình thường
         const messageElement = document.createElement("div");
-        messageElement.textContent = `Admin: ${message}`;
+        messageElement.textContent = `${message}`;
         document.getElementById("chatbox-body").appendChild(messageElement);
 
         // Thêm hiệu ứng nhấp nháy
