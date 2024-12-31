@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 30, 2024 lúc 03:00 PM
+-- Thời gian đã tạo: Th12 27, 2024 lúc 03:03 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -45,29 +45,6 @@ INSERT INTO `authenticationusr` (`Authentication`, `AuthenticationName`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `complaint`
---
-
-CREATE TABLE `complaint` (
-  `ComplaintID` int(50) NOT NULL,
-  `Title` varchar(255) NOT NULL,
-  `Description` varchar(255) NOT NULL,
-  `Status` tinyint(1) NOT NULL DEFAULT 0,
-  `DateSubmitted` datetime NOT NULL,
-  `AdminReply` text NOT NULL,
-  `InvoiceID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `complaint`
---
-
-INSERT INTO `complaint` (`ComplaintID`, `Title`, `Description`, `Status`, `DateSubmitted`, `AdminReply`, `InvoiceID`) VALUES
-(11, 'Đơn hàng chậm', 'Hôm nay đến bây h chưa có đơn hàng', 1, '2024-12-30 13:53:31', 'Xin lỗi bạn, đơn hàng đang được giao đến và sẽ có trong 14h hôm nay <3', 33);
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `invoice`
 --
 
@@ -90,7 +67,8 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`InvoiceID`, `Email`, `UsrName`, `PhoneNo`, `Address`, `SubTotal`, `Ship`, `Discount`, `Total`, `DateInvoice`, `Status`) VALUES
-(33, 'minhkhachhang@gmail.com', 'Hoàng Nhật Minh', '0937264559', '176 đường Lữ Gia, Quận Tân Phú, TPHCM', 2556000, 50000, 255600, 2350400, '2024-12-30 13:52:17', 'Đơn bị Hủy');
+(26, 'minhkhachhang@gmail.com', 'Hoàng Nhật Minh', '0937264559', '176 đường Lữ Gia, Quận Tân Phú, TPHCM', 2050000, 0, 205000, 1845000, '2024-12-27 00:24:53', 'Hoàn tất đơn hàng'),
+(27, 'minhkhachhang@gmail.com', 'Quỳnh Hương', '0793000000', '13 Tên Lửa, Bình Trị Đông', 1800000, 50000, 0, 1850000, '2024-12-27 19:09:46', 'Chờ xác nhận');
 
 -- --------------------------------------------------------
 
@@ -111,8 +89,9 @@ CREATE TABLE `invoicedetails` (
 --
 
 INSERT INTO `invoicedetails` (`InvoiceID`, `ProductID`, `Quantities`, `Price`, `SubTotal`) VALUES
-(33, 69, 1, 1800000, 1800000),
-(33, 80, 1, 756000, 756000);
+(26, 70, 1, 900000, 900000),
+(26, 71, 1, 1150000, 1150000),
+(27, 69, 1, 1800000, 1800000);
 
 -- --------------------------------------------------------
 
@@ -132,29 +111,28 @@ CREATE TABLE `product` (
   `imgsrc` varchar(50) NOT NULL,
   `Date` datetime NOT NULL,
   `Note` text NOT NULL,
-  `isTrending` tinyint(1) NOT NULL DEFAULT 0,
-  `Doanh_so` int(255) NOT NULL DEFAULT 0
+  `isTrending` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`ProductID`, `ProductName`, `Brand`, `ProductTypeID`, `UnitPrice`, `Quantity`, `Size`, `Description`, `imgsrc`, `Date`, `Note`, `isTrending`, `Doanh_so`) VALUES
-(69, 'Sữa Rửa Mặt Hoa Cúc Kiehls Calendula', 'Kiehls', 91, 1800000, 3, '', 'Sữa Rửa Mặt Hoa Cúc Kiehls Calendula Deep Cleansing Foaming Face Wash 500ml tạo bọt làm sạch sâu và giúp cân bằng cho da thường và da dầu, đồng thời nhẹ nhàng loại bỏ tạp chất mà không làm mất đi độ ẩm cần thiết của da. Với thành phần chiết xuất Hoa Cúc (Calendula) với nguồn cung bền vững, chứa năm hợp chất giúp làm dịu mẩn đỏ và kích ứng trên da, công thức dạng gel nhanh chóng tạo bọt mịn khi kết hợp với nước, dễ dàng làm sạch và làm dịu da sau khi sử dụng.', 'SP69.jpg', '2024-12-26 23:46:06', '', 1, 1),
-(70, 'Sữa Rửa Mặt Đất Sét Kiehls Rare Earth Deep Pore Daily Cleanser', 'Kiehls', 91, 900000, 4, '', 'Được bào chế từ Đất sét trắng Amazon, sữa rửa mặt Kiehls Rare Earth Deep Pore Daily Cleanser giúp loại bỏ bụi bẩn và dầu thừa tối ưu, đồng thời se khít lỗ chân lông một cách rõ rệt, giúp làm sạch tế bào da chết cho da bằng sữa rửa mặt làm sạch chuyên sâu lỗ chân lông của Kiehls. Sản phẩm có tác dụng nhẹ nhàng làm sạch sâu lỗ chân lông, đem lại cho bạn làn da mềm mại, tươi tắn và khỏe mạnh.', 'SP70.jpg', '2024-12-26 23:49:36', '', 1, 1),
-(71, 'Sữa Rửa Mặt Kiehls Clearly Corrective Brightening & Exfoliating Cleanser', 'Kiehls', 91, 1150000, 4, '', 'Cleanser giúp thanh lọc làn da, nhẹ nhàng lấy đi tế bào da chết, loại bỏ bụi bẩn và các chất ô nhiễm từ môi trường, đồng thời giúp da sáng trong rõ rệt. Với thành phần chứa Chiết xuất Bạch Dương Trắng và Hoa Mẫu Đơn, sản phẩm nhẹ nhàng loại bỏ bụi bẩn, dầu thừa và các chất ô nhiễm. Ngoài ra, thành phần Đá Ngọc Trai từ núi lửa hoạt động như một chất làm sạch tế bào da chết tự nhiên trong sữa rửa mặt làm sáng da, đem lại làn da mịn màng và tươi trẻ hơn.', 'SP71.jpg', '2024-12-26 23:50:42', '', 1, 0),
-(72, 'Gel Rửa Mặt Cho Nam Kiehls Facial Fuel Energizing Face Wash', 'Kiehls', 93, 990000, 5, '', 'Gel Rửa Mặt Cho Nam Kiehls Facial Fuel Energizing Face Wash tươi mát dành cho nam giới giúp loại bỏ cặn bã, bụi bẩn và dầu thừa một cách hiệu quả. Bắt đầu ngày mới tràn đầy năng lượng với sữa rửa mặt có chứa Caffeine, tinh dầu Bạc Hà và Vitamin E.', 'SP72.jpg', '2024-12-26 23:52:51', '', 0, 0),
-(73, 'Sữa Rửa Mặt Kiehls Dạng Gel Blue Herbal Blemish Cleanser Treatment', 'Kiehls', 93, 980000, 5, '', 'Sữa Rửa Mặt Kiehls Dạng Gel Blue Herbal Blemish Cleanser Treatment hiệu quả sẽ giúp bạn làm mờ thâm mụn và ngăn ngừa mụn mới hình thành, đồng thời làm sạch sâu lỗ chân lông, loại bỏ bụi bẩn và dầu thừa trên da. Lấy cảm hứng từ Toner Blue Astringent Herbal Lotion kiểm soát dầu đình đám của Kiehls, sữa rửa mặt tạo bọt có chứa Salicylic Acid này sẽ là bước đầu lý tưởng trong chu trình chăm sóc da mụn của bạn.', 'SP73.jpg', '2024-12-26 23:55:16', '', 1, 20),
-(74, 'Sữa Rửa Mặt Cho Da Nhạy Cảm Kiehls Centella Sensitive Facial Cleanser', 'Kiehls', 93, 1100000, 5, '', 'Sữa Rửa Mặt Cho Da Nhạy Cảm Kiehls Centella Sensitive Facial Cleanser là dòng sữa rửa mặt dịu nhẹ nhất trong các công thức của Kiehls dành cho da nhạy cảm giúp loại bỏ bụi bẩn, dầu thừa và các tạp chất mà không gây kích ứng cho da hoặc bít tắc lỗ chân lông. Công thức có chứa Rau Má – được biết đến với đặc tính làm dịu da, sữa rửa mặt cân bằng độ pH giúp da sạch sâu, làm dịu và thư giãn cho làn da.', 'SP74.jpg', '2024-12-26 23:56:38', '', 0, 23),
-(75, 'Nước Dưỡng Ẩm Cao Cấp SK-II Facial Treatment Essence', 'SK-II', 96, 4590000, 5, '', 'Nước Dưỡng Ẩm Cao Cấp SK-II Facial Treatment Essence 160ml Nước dưỡng ẩm cao cấp SK-II với 90% thành phần độc quyền PITERA™, chứa hơn 50 loại vi dưỡng chất và công thức hơn 40 năm không đổi giúp mang đến Làn Da Trong Trẻo Như Pha Lê', 'SP75.jpg', '2024-12-26 23:59:52', '', 0, 0),
-(76, 'Nước Hoa Hồng Làm Sạch Tế Bào Da Chết SK-II Facial Treatment Clear Lotion', 'SK-II', 96, 2080000, 5, '', 'Nước Hoa Hồng Làm Sạch Tế Bào Da Chết SK-II Facial Treatment Clear Lotion 160ml Sản phẩm Toner làm sạch hàng đầu của SK-II. Chứa công thức làm sạch dịu nhẹ giúp nhẹ nhàng loại bỏ các tế bào xỉn màu để giúp mang đến làn da sạch mịn tươi tắn và chuẩn bị cho làn da trước các bước dưỡng tiếp theo', 'SP76.jpg', '2024-12-27 00:01:21', '', 0, 0),
-(77, 'Nước Cấp Ẩm Chăm Sóc Da Toàn Diện SK-II LXP Ultimate Perfecting Essence', 'SK-II', 96, 9190000, 5, '', 'Nước Cấp Ẩm Chăm Sóc Da Toàn Diện SK-II Lxp Ultimate Perfecting Essence 150ml Nước dưỡng ẩm cao cấp chăm sóc da toàn diện của SK-II, với thành phần độc quyền PITERA™ được chiết xuất với hàm lượng cao nhằm giúp tăng cường nuôi dưỡng chuyên sâu và chăm sóc da toàn diện. Đem đến hiệu quả rõ rệt cho làn da sau khi sử dụng', 'SP77.jpg', '2024-12-27 00:02:30', '', 1, 0),
-(78, 'Serum PDRN tế bào gốc trà xanh cho da căng bóng, đàn hồi INNISFREE Retinol Green Tea PDRN Ampoule 25 mL', 'INNISFREE', 97, 990000, 5, '', 'Serum Retinol PDRN Trà Xanh giúp tái tạo cho da căng bóng & giảm dấu hiệu lão hóa từ bên trong với PDRN và phức hợp Retinol 1%', 'SP78.jpg', '2024-12-27 00:06:00', '', 0, 0),
-(79, 'Tinh Dầu Dưỡng Chống Lão Hoá Từ Trà Đen INNISFREE Black Tea Youth Enhancing Oil', 'INNISFREE', 97, 748000, 4, '', 'Dành cho làn da bị khô do căng thẳng, chăm sóc con cái và những giờ làm việc tăng ca. Dưỡng ẩm, mờ nếp nhăn, làm sáng và thêm rạng rỡ cho làn da trông khỏe mạnh như vừa thức dậy sau một giấc ngủ ngon. Tinh dầu dưỡng da 3 trong 1: Dưỡng ẩm, Chống lão hóa & Làm sáng. Kết cấu mỏng nhẹ như nước và cấp ẩm sâu như dầu, tinh dầu trà đen làm đầy làn da từ bên trong giúp tạo nên làn da khỏe mạnh, rạng rỡ. Dùng được cho mọi loại da (trừ da mụn)', 'SP79.jpg', '2024-12-27 00:06:54', '<p dir=\"ltr\"><strong>Serum innisfree Dưỡng S&aacute;ng Da Tr&ocirc;ng Căng Mướt 30ml&nbsp;</strong>l&agrave; sản phẩm&nbsp;<a href=\"https://hasaki.vn/danh-muc/serum-tinh-chat-c75.html\" target=\"_blank\" rel=\"noopener\">serum</a>&nbsp;đến từ thương hiệu&nbsp;<a href=\"https://hasaki.vn/thuong-hieu/innisfree.html\">innisfree</a>. Th&agrave;nh phần cải tiến với vi&ecirc;n nang vitamin c k&eacute;p v&agrave; enzyme tr&agrave; xanh sinh học gi&uacute;p l&agrave;m đều m&agrave;u da, cải thiện th&acirc;m sạm v&agrave; mang lại l&agrave;n da trắng s&aacute;ng, mịn m&agrave;ng, rạng ngời.&nbsp;</p>\r\n<p dir=\"ltr\"><strong>Serum innisfree Vitamin C Green Tea Enzyme Brightening 30ml&nbsp;</strong>hiện đ&atilde; c&oacute; tại</p>\r\n<p dir=\"ltr\">&nbsp;</p>\r\n<p dir=\"ltr\"><img class=\"loading\" style=\"display: block; margin-left: auto; margin-right: auto;\" title=\"Mua Serum innisfree Dưỡng S&aacute;ng Da Tr&ocirc;ng Căng Mướt tại Hasaki \" src=\"https://media.hcdn.vn/wysiwyg/Chau/serum-innisfree-tra-xanh-duong-am-80ml-moi-2023-3_2.jpg\" alt=\"Mua Serum innisfree Dưỡng S&aacute;ng Da Tr&ocirc;ng Căng Mướt 30ml tại Hasaki \" width=\"381\" height=\"381\" data-was-processed=\"true\"></p>\r\n<p dir=\"ltr\">&nbsp;</p>\r\n<h2 dir=\"ltr\">Loại da ph&ugrave; hợp:</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Ph&ugrave; hợp mọi loại da, đặc biệt&nbsp;<a href=\"https://hasaki.vn/danh-muc/mun-c1877.html\">da mụn</a>, nhạy cảm.</p>\r\n</li>\r\n</ul>\r\n<h2>Giải ph&aacute;p cho t&igrave;nh trạng da:&nbsp;</h2>\r\n<ul>\r\n<li>\r\n<p><a href=\"https://hasaki.vn/danh-muc/xin-mau-tham-sam-c1887.html\" target=\"_blank\" rel=\"noopener\">Da xỉn m&agrave;u</a>&nbsp;v&agrave; th&acirc;m sạm</p>\r\n</li>\r\n</ul>\r\n<h2 dir=\"ltr\">Ưu thế nổi bật:</h2>\r\n<ul>\r\n<li>\r\n<p><strong>Vi&ecirc;n nang vitamin C k&eacute;p</strong>&nbsp;l&agrave;m mờ vết th&acirc;m, l&agrave;m đều m&agrave;u da cho l&agrave;n da s&aacute;ng trong căng mướt.</p>\r\n</li>\r\n<li>\r\n<p><strong>Enzyme tr&agrave; xanh sinh học</strong>&nbsp;tẩy tế b&agrave;o chết nhẹ nh&agrave;ng, l&agrave;m mịn da, kh&ocirc;ng g&acirc;y k&iacute;ch ứng.</p>\r\n</li>\r\n<li>\r\n<p>C&ocirc;ng nghệ thẩm thấu nhanh đưa hoạt chất v&agrave;o da hiệu quả.</p>\r\n</li>\r\n</ul>\r\n<p>&nbsp;</p>\r\n<p style=\"padding-left: 160px;\"><img class=\"loading\" title=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening \" src=\"https://media.hcdn.vn/wysiwyg/Chau/serum-innisfree-tra-xanh-duong-am-80ml-moi-2023-2_2.jpg\" alt=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening 30ml\" width=\"449\" height=\"449\" data-was-processed=\"true\"><img class=\"loading\" title=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening 30ml đ&atilde; c&oacute; tại Hasaki\" src=\"https://media.hcdn.vn/wysiwyg/Chau/serum-innisfree-tra-xanh-duong-am-80ml-moi-2023-1_1.jpg\" alt=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening  \" width=\"451\" height=\"451\" data-was-processed=\"true\"></p>\r\n<p>&nbsp;</p>\r\n<h2>Độ hiệu quả:</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Cải thiện 48% về số lượng nhược điểm, cải thiện 101%&nbsp; kết cấu da, 112% cải thiện t&iacute;nh minh bạch sau 4 tuần về cải thiện vết th&acirc;m, cấu tr&uacute;c da sau 4 tuần sử dụng v&agrave; trong suốt ngay sau khi sử dụng.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Hiệu ứng l&agrave;m s&aacute;ng mạnh hơn gấp 4 lần, tinh chất l&agrave;m săn chắc, chăm s&oacute;c vết th&acirc;m v&agrave; bong tr&oacute;c c&ugrave;ng một l&uacute;c, chăm s&oacute;c cho l&agrave;n da s&aacute;ng hơn v&agrave; kết cấu da mịn m&agrave;ng.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">L&agrave;n da trong suốt với khả năng chăm s&oacute;c mụn gấp 4 lần. Cải thiện diện t&iacute;ch hắc tố bề mặt v&agrave; cải thiện t&ocirc;ng m&agrave;u da.</p>\r\n</li>\r\n</ul>\r\n<h2>Độ an to&agrave;n:&nbsp;</h2>\r\n<ul>\r\n<li>\r\n<p>C&ocirc;ng thức l&agrave;nh t&iacute;nh</p>\r\n</li>\r\n<li>\r\n<p>C&ocirc;ng thức 9 kh&ocirc;ng th&agrave;nh phần c&oacute; hại</p>\r\n</li>\r\n<li>\r\n<p>C&ocirc;ng thức đạt 0.00 kh&ocirc;ng g&acirc;y k&iacute;ch ứng da&nbsp;</p>\r\n</li>\r\n</ul>\r\n<h2 dir=\"ltr\">Bảo quản:&nbsp;</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Tr&aacute;nh &aacute;nh nắng trực tiếp.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Để nơi kh&ocirc; r&aacute;o, tho&aacute;ng m&aacute;t.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Đậy nắp k&iacute;n sau khi sử dụng.</p>\r\n</li>\r\n</ul>\r\n<h2 dir=\"ltr\">Th&ocirc;ng số sản phẩm:</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Dung t&iacute;ch:</strong>&nbsp;30ml</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Thương hiệu:</strong>&nbsp;innisfree</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Xuất xứ thương hiệu:</strong>&nbsp;H&agrave;n Quốc</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Sản xuất tại:</strong> H&agrave;n Quốc</p>\r\n</li>\r\n</ul>', 0, 0),
-(80, 'Tinh chất dưỡng da từ hoa lan Innisfree Jeju Orchid Enriched Essence 50ml', 'INNISFREE', 97, 756000, 5, '', 'Tinh chất dưỡng da đa năng giúp dưỡng da khỏe, săn chắc, mềm mại cũng như nuôi dưỡng và làm sáng da Innisfree Jeju Orchid Enriched Essence', 'SP80.jpg', '2024-12-27 00:07:30', '', 1, 16),
-(81, 'Advanced Night Repair Synchronized Multi-Recovery Complex', 'ESTEE LAUDER', 99, 1650000, 5, '', '7 Tinh chất trong 1: Chống lại các dấu hiệu lão hóa', 'SP81.jpg', '2024-12-27 00:11:22', '', 0, 25),
-(83, 'Advanced Night Repair Rescue Solution with 15% Bifidus Ferment', 'ESTEE LAUDER', 99, 2750000, 5, '', 'Kết cấu serum lỏng, thẩm thấu nhanh, lý tưởng cho làn da mỏng, dễ nhạy cảm', 'SP83.jpg', '2024-12-27 00:13:31', '', 0, 0);
+INSERT INTO `product` (`ProductID`, `ProductName`, `Brand`, `ProductTypeID`, `UnitPrice`, `Quantity`, `Size`, `Description`, `imgsrc`, `Date`, `Note`, `isTrending`) VALUES
+(69, 'Sữa Rửa Mặt Hoa Cúc Kiehls Calendula', 'Kiehls', 91, 1800000, 4, '', 'Sữa Rửa Mặt Hoa Cúc Kiehls Calendula Deep Cleansing Foaming Face Wash 500ml tạo bọt làm sạch sâu và giúp cân bằng cho da thường và da dầu, đồng thời nhẹ nhàng loại bỏ tạp chất mà không làm mất đi độ ẩm cần thiết của da. Với thành phần chiết xuất Hoa Cúc (Calendula) với nguồn cung bền vững, chứa năm hợp chất giúp làm dịu mẩn đỏ và kích ứng trên da, công thức dạng gel nhanh chóng tạo bọt mịn khi kết hợp với nước, dễ dàng làm sạch và làm dịu da sau khi sử dụng.', 'SP69.jpg', '2024-12-26 23:46:06', '', 1),
+(70, 'Sữa Rửa Mặt Đất Sét Kiehls Rare Earth Deep Pore Daily Cleanser', 'Kiehls', 91, 900000, 4, '', 'Được bào chế từ Đất sét trắng Amazon, sữa rửa mặt Kiehls Rare Earth Deep Pore Daily Cleanser giúp loại bỏ bụi bẩn và dầu thừa tối ưu, đồng thời se khít lỗ chân lông một cách rõ rệt, giúp làm sạch tế bào da chết cho da bằng sữa rửa mặt làm sạch chuyên sâu lỗ chân lông của Kiehls. Sản phẩm có tác dụng nhẹ nhàng làm sạch sâu lỗ chân lông, đem lại cho bạn làn da mềm mại, tươi tắn và khỏe mạnh.', 'SP70.jpg', '2024-12-26 23:49:36', '', 0),
+(71, 'Sữa Rửa Mặt Kiehls Clearly Corrective Brightening & Exfoliating Cleanser', 'Kiehls', 91, 1150000, 4, '', 'Cleanser giúp thanh lọc làn da, nhẹ nhàng lấy đi tế bào da chết, loại bỏ bụi bẩn và các chất ô nhiễm từ môi trường, đồng thời giúp da sáng trong rõ rệt. Với thành phần chứa Chiết xuất Bạch Dương Trắng và Hoa Mẫu Đơn, sản phẩm nhẹ nhàng loại bỏ bụi bẩn, dầu thừa và các chất ô nhiễm. Ngoài ra, thành phần Đá Ngọc Trai từ núi lửa hoạt động như một chất làm sạch tế bào da chết tự nhiên trong sữa rửa mặt làm sáng da, đem lại làn da mịn màng và tươi trẻ hơn.', 'SP71.jpg', '2024-12-26 23:50:42', '', 0),
+(72, 'Gel Rửa Mặt Cho Nam Kiehls Facial Fuel Energizing Face Wash', 'Kiehls', 93, 990000, 5, '', 'Gel Rửa Mặt Cho Nam Kiehls Facial Fuel Energizing Face Wash tươi mát dành cho nam giới giúp loại bỏ cặn bã, bụi bẩn và dầu thừa một cách hiệu quả. Bắt đầu ngày mới tràn đầy năng lượng với sữa rửa mặt có chứa Caffeine, tinh dầu Bạc Hà và Vitamin E.', 'SP72.jpg', '2024-12-26 23:52:51', '', 0),
+(73, 'Sữa Rửa Mặt Kiehls Dạng Gel Blue Herbal Blemish Cleanser Treatment', 'Kiehls', 93, 980000, 5, '', 'Sữa Rửa Mặt Kiehls Dạng Gel Blue Herbal Blemish Cleanser Treatment hiệu quả sẽ giúp bạn làm mờ thâm mụn và ngăn ngừa mụn mới hình thành, đồng thời làm sạch sâu lỗ chân lông, loại bỏ bụi bẩn và dầu thừa trên da. Lấy cảm hứng từ Toner Blue Astringent Herbal Lotion kiểm soát dầu đình đám của Kiehls, sữa rửa mặt tạo bọt có chứa Salicylic Acid này sẽ là bước đầu lý tưởng trong chu trình chăm sóc da mụn của bạn.', 'SP73.jpg', '2024-12-26 23:55:16', '', 1),
+(74, 'Sữa Rửa Mặt Cho Da Nhạy Cảm Kiehls Centella Sensitive Facial Cleanser', 'Kiehls', 93, 1100000, 5, '', 'Sữa Rửa Mặt Cho Da Nhạy Cảm Kiehls Centella Sensitive Facial Cleanser là dòng sữa rửa mặt dịu nhẹ nhất trong các công thức của Kiehls dành cho da nhạy cảm giúp loại bỏ bụi bẩn, dầu thừa và các tạp chất mà không gây kích ứng cho da hoặc bít tắc lỗ chân lông. Công thức có chứa Rau Má – được biết đến với đặc tính làm dịu da, sữa rửa mặt cân bằng độ pH giúp da sạch sâu, làm dịu và thư giãn cho làn da.', 'SP74.jpg', '2024-12-26 23:56:38', '', 0),
+(75, 'Nước Dưỡng Ẩm Cao Cấp SK-II Facial Treatment Essence', 'SK-II', 96, 4590000, 5, '', 'Nước Dưỡng Ẩm Cao Cấp SK-II Facial Treatment Essence 160ml Nước dưỡng ẩm cao cấp SK-II với 90% thành phần độc quyền PITERA™, chứa hơn 50 loại vi dưỡng chất và công thức hơn 40 năm không đổi giúp mang đến Làn Da Trong Trẻo Như Pha Lê', 'SP75.jpg', '2024-12-26 23:59:52', '', 0),
+(76, 'Nước Hoa Hồng Làm Sạch Tế Bào Da Chết SK-II Facial Treatment Clear Lotion', 'SK-II', 96, 2080000, 5, '', 'Nước Hoa Hồng Làm Sạch Tế Bào Da Chết SK-II Facial Treatment Clear Lotion 160ml Sản phẩm Toner làm sạch hàng đầu của SK-II. Chứa công thức làm sạch dịu nhẹ giúp nhẹ nhàng loại bỏ các tế bào xỉn màu để giúp mang đến làn da sạch mịn tươi tắn và chuẩn bị cho làn da trước các bước dưỡng tiếp theo', 'SP76.jpg', '2024-12-27 00:01:21', '', 0),
+(77, 'Nước Cấp Ẩm Chăm Sóc Da Toàn Diện SK-II LXP Ultimate Perfecting Essence', 'SK-II', 96, 9190000, 5, '', 'Nước Cấp Ẩm Chăm Sóc Da Toàn Diện SK-II Lxp Ultimate Perfecting Essence 150ml Nước dưỡng ẩm cao cấp chăm sóc da toàn diện của SK-II, với thành phần độc quyền PITERA™ được chiết xuất với hàm lượng cao nhằm giúp tăng cường nuôi dưỡng chuyên sâu và chăm sóc da toàn diện. Đem đến hiệu quả rõ rệt cho làn da sau khi sử dụng', 'SP77.jpg', '2024-12-27 00:02:30', '', 1),
+(78, 'Serum PDRN tế bào gốc trà xanh cho da căng bóng, đàn hồi INNISFREE Retinol Green Tea PDRN Ampoule 25 mL', 'INNISFREE', 97, 990000, 5, '', 'Serum Retinol PDRN Trà Xanh giúp tái tạo cho da căng bóng & giảm dấu hiệu lão hóa từ bên trong với PDRN và phức hợp Retinol 1%', 'SP78.jpg', '2024-12-27 00:06:00', '', 0),
+(79, 'Tinh Dầu Dưỡng Chống Lão Hoá Từ Trà Đen INNISFREE Black Tea Youth Enhancing Oil', 'INNISFREE', 97, 748000, 5, '', 'Dành cho làn da bị khô do căng thẳng, chăm sóc con cái và những giờ làm việc tăng ca. Dưỡng ẩm, mờ nếp nhăn, làm sáng và thêm rạng rỡ cho làn da trông khỏe mạnh như vừa thức dậy sau một giấc ngủ ngon. Tinh dầu dưỡng da 3 trong 1: Dưỡng ẩm, Chống lão hóa & Làm sáng. Kết cấu mỏng nhẹ như nước và cấp ẩm sâu như dầu, tinh dầu trà đen làm đầy làn da từ bên trong giúp tạo nên làn da khỏe mạnh, rạng rỡ. Dùng được cho mọi loại da (trừ da mụn)', 'SP79.jpg', '2024-12-27 00:06:54', '<p dir=\"ltr\"><strong>Serum innisfree Dưỡng S&aacute;ng Da Tr&ocirc;ng Căng Mướt 30ml&nbsp;</strong>l&agrave; sản phẩm&nbsp;<a href=\"https://hasaki.vn/danh-muc/serum-tinh-chat-c75.html\" target=\"_blank\" rel=\"noopener\">serum</a>&nbsp;đến từ thương hiệu&nbsp;<a href=\"https://hasaki.vn/thuong-hieu/innisfree.html\">innisfree</a>. Th&agrave;nh phần cải tiến với vi&ecirc;n nang vitamin c k&eacute;p v&agrave; enzyme tr&agrave; xanh sinh học gi&uacute;p l&agrave;m đều m&agrave;u da, cải thiện th&acirc;m sạm v&agrave; mang lại l&agrave;n da trắng s&aacute;ng, mịn m&agrave;ng, rạng ngời.&nbsp;</p>\r\n<p dir=\"ltr\"><strong>Serum innisfree Vitamin C Green Tea Enzyme Brightening 30ml&nbsp;</strong>hiện đ&atilde; c&oacute; tại</p>\r\n<p dir=\"ltr\">&nbsp;</p>\r\n<p dir=\"ltr\"><img class=\"loading\" style=\"display: block; margin-left: auto; margin-right: auto;\" title=\"Mua Serum innisfree Dưỡng S&aacute;ng Da Tr&ocirc;ng Căng Mướt tại Hasaki \" src=\"https://media.hcdn.vn/wysiwyg/Chau/serum-innisfree-tra-xanh-duong-am-80ml-moi-2023-3_2.jpg\" alt=\"Mua Serum innisfree Dưỡng S&aacute;ng Da Tr&ocirc;ng Căng Mướt 30ml tại Hasaki \" width=\"381\" height=\"381\" data-was-processed=\"true\"></p>\r\n<p dir=\"ltr\">&nbsp;</p>\r\n<h2 dir=\"ltr\">Loại da ph&ugrave; hợp:</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Ph&ugrave; hợp mọi loại da, đặc biệt&nbsp;<a href=\"https://hasaki.vn/danh-muc/mun-c1877.html\">da mụn</a>, nhạy cảm.</p>\r\n</li>\r\n</ul>\r\n<h2>Giải ph&aacute;p cho t&igrave;nh trạng da:&nbsp;</h2>\r\n<ul>\r\n<li>\r\n<p><a href=\"https://hasaki.vn/danh-muc/xin-mau-tham-sam-c1887.html\" target=\"_blank\" rel=\"noopener\">Da xỉn m&agrave;u</a>&nbsp;v&agrave; th&acirc;m sạm</p>\r\n</li>\r\n</ul>\r\n<h2 dir=\"ltr\">Ưu thế nổi bật:</h2>\r\n<ul>\r\n<li>\r\n<p><strong>Vi&ecirc;n nang vitamin C k&eacute;p</strong>&nbsp;l&agrave;m mờ vết th&acirc;m, l&agrave;m đều m&agrave;u da cho l&agrave;n da s&aacute;ng trong căng mướt.</p>\r\n</li>\r\n<li>\r\n<p><strong>Enzyme tr&agrave; xanh sinh học</strong>&nbsp;tẩy tế b&agrave;o chết nhẹ nh&agrave;ng, l&agrave;m mịn da, kh&ocirc;ng g&acirc;y k&iacute;ch ứng.</p>\r\n</li>\r\n<li>\r\n<p>C&ocirc;ng nghệ thẩm thấu nhanh đưa hoạt chất v&agrave;o da hiệu quả.</p>\r\n</li>\r\n</ul>\r\n<p>&nbsp;</p>\r\n<p style=\"padding-left: 160px;\"><img class=\"loading\" title=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening \" src=\"https://media.hcdn.vn/wysiwyg/Chau/serum-innisfree-tra-xanh-duong-am-80ml-moi-2023-2_2.jpg\" alt=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening 30ml\" width=\"449\" height=\"449\" data-was-processed=\"true\"><img class=\"loading\" title=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening 30ml đ&atilde; c&oacute; tại Hasaki\" src=\"https://media.hcdn.vn/wysiwyg/Chau/serum-innisfree-tra-xanh-duong-am-80ml-moi-2023-1_1.jpg\" alt=\"Serum innisfree Vitamin C Green Tea Enzyme Brightening  \" width=\"451\" height=\"451\" data-was-processed=\"true\"></p>\r\n<p>&nbsp;</p>\r\n<h2>Độ hiệu quả:</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Cải thiện 48% về số lượng nhược điểm, cải thiện 101%&nbsp; kết cấu da, 112% cải thiện t&iacute;nh minh bạch sau 4 tuần về cải thiện vết th&acirc;m, cấu tr&uacute;c da sau 4 tuần sử dụng v&agrave; trong suốt ngay sau khi sử dụng.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Hiệu ứng l&agrave;m s&aacute;ng mạnh hơn gấp 4 lần, tinh chất l&agrave;m săn chắc, chăm s&oacute;c vết th&acirc;m v&agrave; bong tr&oacute;c c&ugrave;ng một l&uacute;c, chăm s&oacute;c cho l&agrave;n da s&aacute;ng hơn v&agrave; kết cấu da mịn m&agrave;ng.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">L&agrave;n da trong suốt với khả năng chăm s&oacute;c mụn gấp 4 lần. Cải thiện diện t&iacute;ch hắc tố bề mặt v&agrave; cải thiện t&ocirc;ng m&agrave;u da.</p>\r\n</li>\r\n</ul>\r\n<h2>Độ an to&agrave;n:&nbsp;</h2>\r\n<ul>\r\n<li>\r\n<p>C&ocirc;ng thức l&agrave;nh t&iacute;nh</p>\r\n</li>\r\n<li>\r\n<p>C&ocirc;ng thức 9 kh&ocirc;ng th&agrave;nh phần c&oacute; hại</p>\r\n</li>\r\n<li>\r\n<p>C&ocirc;ng thức đạt 0.00 kh&ocirc;ng g&acirc;y k&iacute;ch ứng da&nbsp;</p>\r\n</li>\r\n</ul>\r\n<h2 dir=\"ltr\">Bảo quản:&nbsp;</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Tr&aacute;nh &aacute;nh nắng trực tiếp.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Để nơi kh&ocirc; r&aacute;o, tho&aacute;ng m&aacute;t.</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\">Đậy nắp k&iacute;n sau khi sử dụng.</p>\r\n</li>\r\n</ul>\r\n<h2 dir=\"ltr\">Th&ocirc;ng số sản phẩm:</h2>\r\n<ul>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Dung t&iacute;ch:</strong>&nbsp;30ml</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Thương hiệu:</strong>&nbsp;innisfree</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Xuất xứ thương hiệu:</strong>&nbsp;H&agrave;n Quốc</p>\r\n</li>\r\n<li dir=\"ltr\">\r\n<p dir=\"ltr\"><strong>Sản xuất tại:</strong> H&agrave;n Quốc</p>\r\n</li>\r\n</ul>', 0),
+(80, 'Tinh chất dưỡng da từ hoa lan Innisfree Jeju Orchid Enriched Essence 50ml', 'INNISFREE', 97, 756000, 5, '', 'Tinh chất dưỡng da đa năng giúp dưỡng da khỏe, săn chắc, mềm mại cũng như nuôi dưỡng và làm sáng da Innisfree Jeju Orchid Enriched Essence', 'SP80.jpg', '2024-12-27 00:07:30', '', 1),
+(81, 'Advanced Night Repair Synchronized Multi-Recovery Complex', 'ESTEE LAUDER', 99, 1650000, 5, '', '7 Tinh chất trong 1: Chống lại các dấu hiệu lão hóa', 'SP81.jpg', '2024-12-27 00:11:22', '', 0),
+(83, 'Advanced Night Repair Rescue Solution with 15% Bifidus Ferment', 'ESTEE LAUDER', 99, 2750000, 5, '', 'Kết cấu serum lỏng, thẩm thấu nhanh, lý tưởng cho làn da mỏng, dễ nhạy cảm', 'SP83.jpg', '2024-12-27 00:13:31', '', 0);
 
 -- --------------------------------------------------------
 
@@ -231,6 +209,7 @@ CREATE TABLE `voucher` (
 --
 
 INSERT INTO `voucher` (`VoucherID`, `StartDate`, `EndDate`, `DiscountPercent`) VALUES
+('KM01', '2024-12-15', '2024-12-21', 10),
 ('KMGS', '2024-12-26', '2024-12-31', 10);
 
 --
@@ -242,12 +221,6 @@ INSERT INTO `voucher` (`VoucherID`, `StartDate`, `EndDate`, `DiscountPercent`) V
 --
 ALTER TABLE `authenticationusr`
   ADD PRIMARY KEY (`Authentication`);
-
---
--- Chỉ mục cho bảng `complaint`
---
-ALTER TABLE `complaint`
-  ADD PRIMARY KEY (`ComplaintID`);
 
 --
 -- Chỉ mục cho bảng `invoice`
@@ -290,16 +263,10 @@ ALTER TABLE `voucher`
 --
 
 --
--- AUTO_INCREMENT cho bảng `complaint`
---
-ALTER TABLE `complaint`
-  MODIFY `ComplaintID` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
 -- AUTO_INCREMENT cho bảng `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `InvoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `InvoiceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `product`

@@ -121,24 +121,32 @@
 					<div class="col-md-6">
 						<div class="shiping-methods">
 							<div class="section-title">
-								<h4 class="title">Cách thức giao hàng</h4>
+								<h4 class="title">Phương Thức giao hàng</h4>
 							</div>
 							<div class="input-checkbox">
 								<input type="radio" name="shipping" id="shipping-1" value='0' onchange='switchShipping();' checked>
-								<label for="shipping-1">Giao Hàng Nhanh - 50.000<sup>₫</sup></label>
+								<label for="shipping-1">Giao Hàng Hỏa Tốc - 50.000<sup>₫</sup></label>
 								<div class="caption">
-									<p>Hàng sẽ giao trong vòng 1-3 ngày
+									<p>Hàng sẽ giao trong vòng 24h
 										<p>
 								</div>
 							</div>
 							<div class="input-checkbox">
 								<input type="radio" name="shipping" id="shipping-2" value='1' onchange='switchShipping();'>
-								<label for="shipping-2">Giao Hàng Chậm - 0<sup>₫</sup></label>
+								<label for="shipping-2">Giao Hàng Tiêu Chuẩn - 0<sup>₫</sup></label>
 								<div class="caption">
 									<p>Hàng sẽ giao trong vòng 4-7 ngày
 										<p>
 								</div>
 							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="s">
+							<div class="section-title">
+								<h4 class="title">Phương thức Thanh Toán</h4>
+							</div>
+								<label for="">Thanh Toán Tiền Mặt 💲 <span style="color: grey; font-weight:100">(Mặc định)</span><sup></sup></label>
 						</div>
 					</div>
 					<table class="shopping-cart-table table">
