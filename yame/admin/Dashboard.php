@@ -20,7 +20,7 @@ $row_vouchers = mysqli_fetch_assoc($result_vouchers);
 $totalVouchers = $row_vouchers['totalVouchers'];
 
 // Truy vấn số lượng sản phẩm
-$sql_products = "SELECT COUNT(*) AS totalProducts FROM product";
+$sql_products = "SELECT COUNT(*) AS totalProducts FROM product Where block = 0";
 $result_products = DataProvider::executeQuery($sql_products);
 $row_products = mysqli_fetch_assoc($result_products);
 $totalProducts = $row_products['totalProducts'];
@@ -213,7 +213,7 @@ $totalRevenue[] = $row['totalRevenue'];
 					<!-- <h3 class="text-center">Thống Kê số lượng bán ra từng sản phẩm</h3> -->
 
 					<?php
-					$sql_accounts = "SELECT ProductName, Brand, Doanh_so FROM Product ORDER BY Doanh_so DESC";
+					$sql_accounts = "SELECT ProductName, Brand, Doanh_so FROM Product WHERE block = 0 ORDER BY Doanh_so DESC";
 					$result_ds = DataProvider::executeQuery($sql_accounts);
 					echo '<h3 class="text-center">Thống Kê số lượng bán ra từng sản phẩm</h3>';
 

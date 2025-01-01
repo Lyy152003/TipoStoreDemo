@@ -99,7 +99,7 @@
 require_once('../DataProvider.php'); // Đảm bảo đường dẫn chính xác
 
 // Lấy danh sách sản phẩm
-$sql = "SELECT ProductID, ProductName, Brand FROM product";
+$sql = "SELECT ProductID, ProductName, Brand FROM product WHERE block = 0";
 $rs = DataProvider::executeQuery($sql); // Sử dụng phương thức kết nối như bạn đã nêu
 $products = [];
 while ($row = mysqli_fetch_array($rs, MYSQLI_BOTH)) { // Sử dụng mysqli_fetch_array

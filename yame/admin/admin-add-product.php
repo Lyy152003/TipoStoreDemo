@@ -89,18 +89,6 @@
 			<!-- row -->
 			<div class="row row-admin">
 				<!-- Search -->
-                <div class="header-search">
-                    <form action="products.php" method="GET" onsubmit="return true" name="Search">
-                        <input class="input search-input" type="text" placeholder="12.12 Tipo Store Day - Siêu sale Đa Kênh ..." name="txtSearch"
-                            <?php
-                                if (isset($_GET['txtSearch']))
-                                    echo "value=\"".$_GET['txtSearch']."\"";
-                            ?>
-                        >
-                        <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
-                    </form>
-                </div>
-                <!-- /Search -->
 				<!-- MAIN -->
 				<div id="main" class="col-md-12">
 				<a href="adminproducts.php" class="btn btn-primary"> <i class="fa fa-home"></i></a> <!-- Change 'index.php' to your homepage URL -->

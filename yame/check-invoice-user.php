@@ -157,7 +157,7 @@
 										
 										if ($status == 0 && ($adminReply == $defaultReply || empty($adminReply))) {
 											// Nếu khiếu nại chưa xử lý và phản hồi admin là mặc định
-											$complaintLink = "<a href='complaint-details.php?complaintID=" . $complaintID . "'>Chờ phản hồi tự Admin nhé 💁 </a>";
+											$complaintLink = "<a href='complaint-details.php?complaintID=" . $complaintID . "'>Chờ phản hồi từ Admin nhé 💁 </a>";
 										} elseif ($status == 1 && $adminReply != $defaultReply) {
 											// Nếu khiếu nại đã xử lý và phản hồi admin khác với mặc định
 											$complaintLink = "<a href='complaint-details.php?complaintID=" . $complaintID . "'>Admin đã phản hồi 💬</a>";

@@ -111,6 +111,7 @@
 						<tr>
 							<td>Mã Hàng Hóa</td>
 							<td>Hình ảnh</td>
+							<td>Tên sản phẩm</td>
 							<td>Đơn giá</td>
 							<td>Số Lượng</td>
 							<td>Thành tiền</td>
@@ -124,6 +125,7 @@
 								echo "<tr>";
 								echo "<td>".$row['ProductID']."</td>";
 								echo "<td><img src='../img/".$row['imgsrc']."' width='200px'></td>";
+								echo "<td align='center'>".$row['ProductName']."</td>";
 								echo "<td align='center'>".$row['UnitPrice']."</td>";
 								echo "<td align='center'>".$row['Quantities']."</td>";
 								echo "<td align='center'>".$row['SubTotal']."</td>";

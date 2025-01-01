@@ -6,7 +6,7 @@
         <li><a href="products.php">Sản phẩm</a></li>
         <?php
                     // Lấy danh sách thương hiệu từ cơ sở dữ liệu
-                $sql = "SELECT DISTINCT Brand FROM Product";
+                $sql = "SELECT DISTINCT Brand FROM Product WHERE block = 0";
                 $rs = DataProvider::executeQuery($sql);
 
                 // Hiển thị danh sách thương hiệu trong menu

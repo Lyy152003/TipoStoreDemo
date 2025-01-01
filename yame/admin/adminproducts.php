@@ -213,7 +213,7 @@
 							<ul class="store-pages">
 								<?php
 									//Initiation
-									$sql = "SELECT * FROM Product INNER JOIN ProductType WHERE Product.ProductTypeID = ProductType.ProductTypeID ";
+									$sql = "SELECT * FROM Product INNER JOIN ProductType WHERE Product.ProductTypeID = ProductType.ProductTypeID AND block = 0";
 									$sql_where = "";
 									$rowsPerPage = 9;
 									//Initiation
@@ -246,8 +246,7 @@
 										}
 										else if($editDel=="Xóa")
 										{
-											unlink('../img/'.$rowProduct['imgsrc']);
-											$sqlDelete="DELETE FROM Product WHERE ProductID='$ProductID'";
+											$sqlDelete="UPDATE Product SET block = 1 WHERE ProductID = '$ProductID'";
 											echo "<script>alert('Đã xóa thành công')</script>";
 											DataProvider::executeQuery($sqlDelete);
 										}

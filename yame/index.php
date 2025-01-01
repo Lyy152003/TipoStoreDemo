@@ -140,9 +140,9 @@
 				</div>
 				<!-- section title -->
 				<?php
-					$sql = "SELECT * FROM Product ORDER BY Date DESC LIMIT 0,4";
-					$result = DataProvider::executeQuery($sql);
-					while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
+						$sql = "SELECT * FROM Product WHERE block = 0 ORDER BY Date DESC LIMIT 0,4";
+						$result = DataProvider::executeQuery($sql);
+						while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
 					{
 						echo "<!-- Product Single -->";
 						echo "<form name='products' id='products' action='php/cart.php' method='POST'>";
@@ -162,7 +162,7 @@
 				</div>
 				<!-- section title -->
 				<?php
-					$sql = "SELECT * FROM Product WHERE Doanh_so > 10 ORDER BY Doanh_so DESC LIMIT 0,4";
+					$sql = "SELECT * FROM Product WHERE Doanh_so > 10 && block = 0  ORDER BY Doanh_so DESC LIMIT 0,4";
 					$result = DataProvider::executeQuery($sql);
 					while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
 					{
@@ -212,7 +212,7 @@
 					<?php
 					$sql = "SELECT * FROM Product p 
 							JOIN ProductType pt ON p.ProductTypeID = pt.ProductTypeID 
-							WHERE pt.ProductTypeName = 'Sữa rửa mặt'";
+							WHERE pt.ProductTypeName = 'Sữa rửa mặt' AND p.block = 0";
 
 					$result = DataProvider::executeQuery($sql);
 

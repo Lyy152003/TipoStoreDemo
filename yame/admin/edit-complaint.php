@@ -14,6 +14,7 @@ if (isset($_GET['complaintID'])) {
             c.Status, 
             c.AdminReply, 
             i.Email, 
+            i.PhoneNo,
             i.Total 
         FROM complaint c
         JOIN invoice i ON c.InvoiceID = i.InvoiceID
@@ -30,6 +31,7 @@ if (isset($_GET['complaintID'])) {
         $status = $row['Status'];
         $adminReply = $row['AdminReply']; // Lấy phản hồi của admin
         $email = $row['Email']; // Email khách hàng
+        $sdt = $row['PhoneNo'];
         $totalAmount = $row['Total']; // Giá trị đơn hàng
         if ($status == 0) {
             $adminReply = ''; 
@@ -167,6 +169,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <label for="email"><strong>Email khách hàng:</strong></label>
                         <p id="email"><?= htmlspecialchars($email) ?></p>
                     </div>
+                    <div class="form-group">
+                        <label for="sdt"><strong>Số Điện Thoại khách hàng:</strong></label>
+                        <p id="sdt"><?= htmlspecialchars($sdt) ?></p>
+                    </div>
 
                     <div class="form-group">
                         <label for="totalAmount"><strong>Giá trị đơn hàng:</strong></label>
@@ -186,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <div class="form-group">
                         <label for="adminReply">Phản hồi của quản trị viên:</label>
-                        <textarea id="adminReply" name="adminReply" rows="4" cols="50" class="form-control" <?php echo $status == 1 ? 'readonly' : ''; ?>><?php echo htmlspecialchars($adminReply); ?></textarea>
+                        <textarea id="adminReply" name="adminReply" rows="4" cols="50" class="form-control" <?php echo $status == 1 ? : ''; ?>><?php echo htmlspecialchars($adminReply); ?></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Cập nhật</button>

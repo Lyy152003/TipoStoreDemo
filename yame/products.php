@@ -106,7 +106,7 @@
 								// Truy vấn danh sách các danh mục sản phẩm, loại sản phẩm và số lượng sản phẩm trong mỗi loại
 								$sql = "SELECT pt.Category, pt.ProductTypeName, COUNT(p.ProductID) AS productCount 
 										FROM producttype pt
-										LEFT JOIN product p ON pt.ProductTypeID = p.ProductTypeID 
+										LEFT JOIN product p ON pt.ProductTypeID = p.ProductTypeID AND p.block = 0
 										GROUP BY pt.Category, pt.ProductTypeName";
 								$Type = DataProvider::executeQuery($sql);
 								$type = isset($_GET['slcType']) ? $_GET['slcType'] : "";
@@ -260,6 +260,7 @@
 								// Truy vấn danh sách các thương hiệu và số lượng sản phẩm trong mỗi thương hiệu
 								$sql = "SELECT Brand, COUNT(ProductID) AS productCount 
 										FROM product 
+										WHERE block = 0
 										GROUP BY Brand";
 								$brands = DataProvider::executeQuery($sql);
 								$brand = isset($_GET['slcBrand']) ? $_GET['slcBrand'] : ""; // Nhận thương hiệu từ URL nếu có
@@ -300,7 +301,7 @@
 							<ul class="store-pages">
 								<?php
 									//Initiation
-									$sql = "SELECT * FROM Product INNER JOIN ProductType WHERE Product.ProductTypeID = ProductType.ProductTypeID ";
+									$sql = "SELECT * FROM Product INNER JOIN ProductType WHERE Product.ProductTypeID = ProductType.ProductTypeID AND Product.block = 0 ";
 									$sql_where = "";
 									$rowsPerPage = 6;
 									//Initiation
