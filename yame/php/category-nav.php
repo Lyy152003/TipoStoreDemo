@@ -1,11 +1,25 @@
 <span class="category-header">Danh mục <i class="fa fa-list"></i></span>
 <ul class="category-list">
         <?php
-        // Truy vấn lên CSDL
+        // Kết nối với cơ sở dữ liệu
         require_once('DataProvider.php');
 
-        // Mảng danh mục
-        $categories = array("Chăm sóc da mặt", "Đồ dùng cá nhân", "Chăm sóc cơ thể", "Nước hoa");
+        // Truy vấn lên CSDL để lấy danh mục từ bảng 'producttype'
+        $sql = "SELECT DISTINCT Category FROM producttype";
+        $result = DataProvider::executeQuery($sql);
+
+        // Khởi tạo mảng danh mục
+        $categories = array();
+
+        // Kiểm tra nếu có kết quả trả về từ truy vấn
+        if ($result) {
+            // Duyệt qua các dòng kết quả và thêm danh mục vào mảng
+            while ($row = mysqli_fetch_assoc($result)) {
+                $categories[] = $row['Category'];
+            }
+        } else {
+            echo "Không có danh mục nào trong cơ sở dữ liệu.";
+        }
 
         // Duyệt qua các danh mục
         foreach ($categories as $category) {

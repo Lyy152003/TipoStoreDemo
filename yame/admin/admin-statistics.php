@@ -118,7 +118,7 @@ $totalRevenue[] = $row['totalRevenue'];
         <div class="container container-admin">
 		<?php include('php/navigationInvoice.php'); ?>
 			<div class="row row-admin"> 
-				<h2 class="text-center">Thống Kê Doanh Thu và Số Hóa Đơn 2024</h2>
+				<h2 class="text-center">Thống Kê Doanh Thu và Số Hóa Đơn 2025</h2>
 
 					<!-- Bảng thống kê -->
 					<table class="table table-bordered">

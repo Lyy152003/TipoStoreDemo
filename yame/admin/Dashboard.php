@@ -187,7 +187,7 @@ $totalRevenue[] = $row['totalRevenue'];
                             <i class="fas fa-box icon"></i> <!-- Thay bằng Icon hộp đẹp hơn cho sản phẩm -->
                     </div>
 					
-					<h3 class="text-center">Thống Kê Doanh Thu 2024</h3>
+					<h3 class="text-center">Thống Kê Doanh Thu 2025</h3>
 
 					<!-- Bảng thống kê -->
 					<table class="table table-bordered">
